@@ -9,9 +9,7 @@ import org.yakimovdenis.exorigo_task.database_support.UserRowMapper;
 import org.yakimovdenis.exorigo_task.model.TelephoneEntity;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class UserDaoImpl extends AbstractDao<UserEntity> implements UserDao{
@@ -20,6 +18,9 @@ public class UserDaoImpl extends AbstractDao<UserEntity> implements UserDao{
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    TelephoneDao telephoneDao;
 
     public UserDaoImpl(UserResultSetExtractor userResultSetExtractor, UserRowMapper userRowMapper) {
         this.resultSetExtractor = userResultSetExtractor;
@@ -36,22 +37,41 @@ public class UserDaoImpl extends AbstractDao<UserEntity> implements UserDao{
         source.put("surname", object.getSurname());
         source.put("login", object.getLogin());
         source.put("role_id", object.getRole().getId());
+        updatePhones(object);
         return namedParameterJdbcTemplate.update(query, source)!=0;
     }
 
-    private boolean updatePhones(UserEntity user){
+    private void updatePhones(UserEntity user){
         Map<String, Object> source = new HashMap<>();
         source.put("user_id", user.getId());
         String query = USER_PHONE_EXISTS.replace("${tablename}", TelephoneEntity.TABLE_NAME_FOR_USER_RELATION);
-        String deleteQuery = "DELETE FROM ${tablename} WHERE ID = ${phone_to_user}".replace("${tablename}", TelephoneEntity.TABLE_NAME_FOR_USER_RELATION);
+        String deleteQuery = "DELETE FROM ${tablename} WHERE ID = :deletable".replace("${tablename}", TelephoneEntity.TABLE_NAME_FOR_USER_RELATION);
+        List<Integer> phonesToDelete = new ArrayList<>();
+        List<TelephoneEntity> phonesToInsert = new ArrayList<>();
+        phonesToInsert.addAll(user.getPhones());
+        Set<TelephoneEntity> recentPhones = telephoneDao.getPhonesForUser(user.getId());
 
-        for (TelephoneEntity phone: user.getPhones()){
+        for (TelephoneEntity recentPhone: recentPhones) {
+            boolean exists = false;
+            for (TelephoneEntity newPhone: phonesToInsert){
+                if (recentPhone.getPhoneNumber().equals(newPhone.getPhoneNumber())){
+                    phonesToInsert.remove(newPhone);
+                    exists = true;
+                }
+            }
+            if (!exists){
+                phonesToDelete.add(recentPhone.getId());
+            }
+        }
+        for (Integer idToRemove: phonesToDelete){
+            source.remove("deletable");
+            source.put("deletable", idToRemove);
+            namedParameterJdbcTemplate.update(deleteQuery, source);
+        }
+        for (TelephoneEntity phone: phonesToInsert){
             source.remove("phone_id");
             source.put("phone_id", phone.getId());
-            int data = namedParameterJdbcTemplate.query(query, source, integerResultSetExtractor);
-            if (data!=0){
-                jdbcTemplate.update(deleteQuery.replace("${phone_to_user}", String.valueOf(data)));
-            }
+            namedParameterJdbcTemplate.update(query, source);
         }
     }
 

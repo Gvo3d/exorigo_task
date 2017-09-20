@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.yakimovdenis.exorigo_task.database_support.IntegerResultSetExtractor;
-import org.yakimovdenis.exorigo_task.model.UserEntity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,12 +26,7 @@ public abstract class AbstractDao<T> {
     @Autowired
     protected IntegerResultSetExtractor integerResultSetExtractor;
 
-    @Setter
-    @Getter
     ResultSetExtractor<T> resultSetExtractor;
-
-    @Setter
-    @Getter
     RowMapper<T> rowMapper;
 
     public T getEntity(Integer integer, String tableName) {

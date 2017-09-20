@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
+import org.yakimovdenis.exorigo_task.model.RoleEntity;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
 import org.yakimovdenis.exorigo_task.repositories.RoleDao;
 import org.yakimovdenis.exorigo_task.repositories.TelephoneDao;
@@ -33,7 +34,7 @@ public class UserResultSetExtractor implements ResultSetExtractor<UserEntity> {
         user.setPassword("******");
         user.setName(resultSet.getString("name"));
         user.setSurname(resultSet.getString("surname"));
-        user.setRole(roleDao.getEntity(resultSet.getInt("role_id")));
+        user.setRole(roleDao.getEntity(resultSet.getInt("role_id"), RoleEntity.TABLE_NAME));
         user.setPhones(telephoneDao.getPhonesForUser(user.getId()));
         return user;
     }

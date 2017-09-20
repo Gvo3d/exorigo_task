@@ -1,43 +1,48 @@
 package org.yakimovdenis.exorigo_task.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.yakimovdenis.exorigo_task.database_support.IntegerResultSetExtractor;
-import org.yakimovdenis.exorigo_task.database_support.UserResultSetExtractor;
-import org.yakimovdenis.exorigo_task.database_support.UserRowMapper;
+import org.springframework.stereotype.Repository;
+import org.yakimovdenis.exorigo_task.database_support.*;
 import org.yakimovdenis.exorigo_task.model.RoleEntity;
+import org.yakimovdenis.exorigo_task.model.UserEntity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class RoleDaoImpl extends AbstractDao implements RoleDao {
+@Repository
+public class RoleDaoImpl extends AbstractDao<RoleEntity> implements RoleDao {
+    private static final String UPDATE_QUERY = "UPDATE ${tablename} SET rolename = :rolename WHERE id = :id";
     @Autowired
-    private UserResultSetExtractor userResultSetExtractor;
-    @Autowired
-    private UserRowMapper userRowMapper;
-    @Autowired
-    private IntegerResultSetExtractor integerResultSetExtractor;
+    RoleDao roleDao;
 
-    @Override
+    public RoleDaoImpl(RoleResultSetExtractor roleResultSetExtractor, RoleRowMapper roleRowMapper) {
+        this.resultSetExtractor = roleResultSetExtractor;
+        this.rowMapper = roleRowMapper;
+    }
+
     public RoleEntity getEntity(Integer integer) {
-        return null;
+        return roleDao.getEntity(integer, RoleEntity.TABLE_NAME);
     }
 
-    @Override
     public boolean exists(Integer integer) {
-        return false;
+        return roleDao.exists(integer, RoleEntity.TABLE_NAME);
     }
 
-    @Override
     public List<RoleEntity> getAllEntities(String searcheableParameter, String searcheableValue, String orderingParameter, boolean isAscend) {
-        return null;
+        return roleDao.getAllEntities(searcheableParameter, searcheableValue, orderingParameter, isAscend, RoleEntity.TABLE_NAME);
     }
 
-    @Override
     public boolean delete(Integer integer) {
-        return false;
+        return roleDao.delete(integer, RoleEntity.TABLE_NAME);
     }
 
     @Override
     public boolean update(RoleEntity object) {
-        return false;
+        String query = UPDATE_QUERY.replace("${tablename}", RoleEntity.TABLE_NAME);
+        Map<String, Object> source = new HashMap<>();
+        source.put("rolename", object.getRoleName());
+        source.put("id", object.getId());
+        return namedParameterJdbcTemplate.update(query, source)!=0;
     }
 }
