@@ -7,9 +7,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.yakimovdenis.tests.AbstractTest;
 
-/**
- * Created by Gvozd on 06.01.2017.
- */
 @ContextConfiguration(classes = {TestDAOConfig.class})
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
         TransactionalTestExecutionListener.class,

@@ -1,6 +1,7 @@
 package org.yakimovdenis.exorigo_task.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.yakimovdenis.exorigo_task.database_support.IntegerResultSetExtractor;
@@ -15,12 +16,16 @@ import java.util.*;
 public class UserDaoImpl extends AbstractDao<UserEntity> implements UserDao{
     private static final String UPDATE_USER = "UPDATE ${tablename} u SET u.name = :name, u.surname = :surname, u. login = :login, u.role_id = :role_id WHERE u.id = :id";
     private static final String USER_PHONE_EXISTS = "SELECT id from ${tablename} WHERE user_id = :user_id AND phone_id = :phone_id";
+    private static final String UPDATE_PASSWORD = "UPDATE ${tablename} u SET u.password = :password WHERE u.id = :id";
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     @Autowired
-    TelephoneDao telephoneDao;
+    private TelephoneDao telephoneDao;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserDaoImpl(UserResultSetExtractor userResultSetExtractor, UserRowMapper userRowMapper) {
         this.resultSetExtractor = userResultSetExtractor;
@@ -89,5 +94,13 @@ public class UserDaoImpl extends AbstractDao<UserEntity> implements UserDao{
 
     public boolean delete(Integer id) {
         return userDao.delete(id, UserEntity.TABLE_NAME);
+    }
+
+    @Override
+    public void updateUserPass(Integer id, String newPassword) {
+        String query = UPDATE_PASSWORD.replace("${tablename}", UserEntity.TABLE_NAME);
+        Map<String, Object> source = new HashMap<>();
+        source.put("id", id);
+        source.put("password", bCryptPasswordEncoder.encode(newPassword));
     }
 }

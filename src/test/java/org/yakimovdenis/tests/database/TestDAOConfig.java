@@ -10,10 +10,13 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+import org.yakimovdenis.exorigo_task.database_support.*;
+import org.yakimovdenis.exorigo_task.repositories.*;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
@@ -24,13 +27,6 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 
-//import projectpackage.service.orderservice.ModificationHistoryServiceImpl;
-
-//import projectpackage.repository.roomsdao.RoomTypeDAOImpl;
-
-/**
- * Created by Gvozd on 06.01.2017.
- */
 @ContextConfiguration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
@@ -140,5 +136,65 @@ public class TestDAOConfig implements TransactionManagementConfigurer {
     @Bean
     JdbcTemplate JdbcTemplate(){
         return new JdbcTemplate(dataSource());
+    }
+
+    @Bean
+    BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder(11);
+    }
+
+    @Bean
+    IntegerResultSetExtractor integerResultSetExtractor(){
+        return new IntegerResultSetExtractor();
+    }
+
+    @Bean
+    RoleResultSetExtractor roleResultSetExtractor(){
+        return new RoleResultSetExtractor();
+    }
+
+    @Bean
+    UserResultSetExtractor userResultSetExtractor(){
+        return new UserResultSetExtractor();
+    }
+
+    @Bean
+    TelephoneResultSetExtractor telephoneResultSetExtractor(){
+        return new TelephoneResultSetExtractor();
+    }
+
+    @Bean
+    UserRowMapper userRowMapper(){
+        return new UserRowMapper();
+    }
+
+    @Bean
+    TelephoneRowMapper telephoneRowMapper(){
+        return new TelephoneRowMapper();
+    }
+
+    @Bean
+    RoleRowMapper roleRowMapper(){
+        return new RoleRowMapper();
+    }
+
+    @Bean
+    AuthDao authDao(){
+        return new AuthDaoImpl();
+    }
+
+    @Bean
+    UserDao userDao(){
+        return new UserDaoImpl(userResultSetExtractor(),userRowMapper());
+    }
+
+    @Bean
+    TelephoneDao telephoneDao(){
+        return new TelephoneDaoImpl(telephoneResultSetExtractor(), telephoneRowMapper());
+    }
+
+    @Bean
+    RoleDao roleDao(){
+        return new RoleDaoImpl(roleResultSetExtractor(), roleRowMapper());
     }
 }

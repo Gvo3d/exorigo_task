@@ -39,7 +39,7 @@ public class TelephoneDaoImpl extends AbstractDao<TelephoneEntity> implements Te
         Set<TelephoneEntity> result = new HashSet<>();
         String query = PHONES_FOR_USER.replace("${tablename}", TelephoneEntity.TABLE_NAME_FOR_USER_RELATION);
         Map<String, Object> source = new HashMap<>();
-        source.put("id", userId);
+        source.put("user_id", userId);
         List<Integer> phoneIds = namedParameterJdbcTemplate.query(query, source, new RowMapper<Integer>() {
             @Override
             public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -58,5 +58,21 @@ public class TelephoneDaoImpl extends AbstractDao<TelephoneEntity> implements Te
         }
         result.addAll(jdbcTemplate.query(querybuilder.toString(), rowMapper));
         return result;
+    }
+
+    public TelephoneEntity getEntity(Integer integer) {
+        return telephoneDao.getEntity(integer, TelephoneEntity.TABLE_NAME);
+    }
+
+    public boolean exists(Integer integer) {
+        return telephoneDao.exists(integer, TelephoneEntity.TABLE_NAME);
+    }
+
+    public List<TelephoneEntity> getAllEntities(String searcheableParameter, String searcheableValue, String orderingParameter, boolean isAscend) {
+        return telephoneDao.getAllEntities(searcheableParameter, searcheableValue, orderingParameter, isAscend, TelephoneEntity.TABLE_NAME);
+    }
+
+    public boolean delete(Integer integer) {
+        return telephoneDao.delete(integer, TelephoneEntity.TABLE_NAME);
     }
 }
