@@ -1,6 +1,7 @@
 package org.yakimovdenis.exorigo_task.service;
 
 import org.springframework.stereotype.Service;
+import org.yakimovdenis.exorigo_task.model.RoleEntity;
 import org.yakimovdenis.exorigo_task.model.TelephoneEntity;
 import org.yakimovdenis.exorigo_task.repositories.TelephoneDao;
 import org.yakimovdenis.exorigo_task.repositories.TelephoneDaoImpl;
@@ -31,12 +32,17 @@ public class TelephoneServiceImpl implements TelephoneService {
     }
 
     @Override
-    public boolean delete(Integer integer) {
-        return telephoneDaoImpl.delete(integer);
+    public void delete(Integer integer) {
+        telephoneDaoImpl.delete(integer);
     }
 
     @Override
     public boolean update(TelephoneEntity object) {
         return telephoneDaoImpl.update(object);
+    }
+
+    @Override
+    public void create(TelephoneEntity object) {
+        telephoneDaoImpl.create(object);
     }
 }

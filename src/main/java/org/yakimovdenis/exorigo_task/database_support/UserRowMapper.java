@@ -3,7 +3,10 @@ package org.yakimovdenis.exorigo_task.database_support;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.yakimovdenis.exorigo_task.model.RoleEntity;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
+import org.yakimovdenis.exorigo_task.repositories.RoleDao;
+import org.yakimovdenis.exorigo_task.repositories.TelephoneDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +15,22 @@ import java.sql.SQLException;
 public class UserRowMapper implements RowMapper<UserEntity> {
 
     @Autowired
-    private UserResultSetExtractor userResultSetExtractor;
+    RoleDao roleDao;
+
+    @Autowired
+    TelephoneDao telephoneDao;
 
     @Override
     public UserEntity mapRow(ResultSet resultSet, int i) throws SQLException {
-        return userResultSetExtractor.extractData(resultSet);
+        UserEntity user = new UserEntity();
+        user.setId(resultSet.getInt("id"));
+        user.setEnabled(resultSet.getBoolean("enabled"));
+        user.setLogin(resultSet.getString("login"));
+        user.setPassword("******");
+        user.setName(resultSet.getString("name"));
+        user.setSurname(resultSet.getString("surname"));
+        user.setRole(roleDao.getEntity(resultSet.getInt("role_id"), RoleEntity.TABLE_NAME));
+        user.setPhones(telephoneDao.getPhonesForUser(user.getId()));
+        return user;
     }
 }

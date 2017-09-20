@@ -11,6 +11,7 @@ import java.sql.SQLException;
 public class IntegerResultSetExtractor implements ResultSetExtractor<Integer> {
     @Override
     public Integer extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+        resultSet.next();
         return resultSet.getInt("count");
     }
 }

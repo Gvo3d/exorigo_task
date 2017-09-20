@@ -6,6 +6,6 @@ import lombok.Data;
 public class RoleEntity {
     public static final String TABLE_NAME = "roles";
 
-    private int id;
+    private Integer id;
     private String roleName;
 }

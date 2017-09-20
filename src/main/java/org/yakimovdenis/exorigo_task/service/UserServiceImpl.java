@@ -31,12 +31,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean delete(Integer integer) {
-        return userDaoImpl.delete(integer);
+    public void delete(Integer integer) {
+        userDaoImpl.delete(integer);
     }
 
     @Override
     public boolean update(UserEntity object) {
         return userDaoImpl.update(object);
+    }
+
+    @Override
+    public void create(UserEntity object) {
+        userDaoImpl.create(object);
     }
 }

@@ -6,7 +6,9 @@ import net.sf.log4jdbc.tools.Log4JdbcCustomFormatter;
 import net.sf.log4jdbc.tools.LoggingType;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import org.yakimovdenis.exorigo_task.database_support.*;
 import org.yakimovdenis.exorigo_task.repositories.*;
+import org.yakimovdenis.exorigo_task.service.*;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
@@ -28,7 +31,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 @ContextConfiguration
-@EnableAspectJAutoProxy
+@ComponentScan(basePackages = {"org.yakimovdenis.exorigo_task.database_support"})
 @EnableTransactionManagement
 public class TestDAOConfig implements TransactionManagementConfigurer {
 
@@ -134,7 +137,7 @@ public class TestDAOConfig implements TransactionManagementConfigurer {
     }
 
     @Bean
-    JdbcTemplate JdbcTemplate(){
+    JdbcTemplate jdbcTemplate(){
         return new JdbcTemplate(dataSource());
     }
 
@@ -146,21 +149,6 @@ public class TestDAOConfig implements TransactionManagementConfigurer {
     @Bean
     IntegerResultSetExtractor integerResultSetExtractor(){
         return new IntegerResultSetExtractor();
-    }
-
-    @Bean
-    RoleResultSetExtractor roleResultSetExtractor(){
-        return new RoleResultSetExtractor();
-    }
-
-    @Bean
-    UserResultSetExtractor userResultSetExtractor(){
-        return new UserResultSetExtractor();
-    }
-
-    @Bean
-    TelephoneResultSetExtractor telephoneResultSetExtractor(){
-        return new TelephoneResultSetExtractor();
     }
 
     @Bean
@@ -185,16 +173,36 @@ public class TestDAOConfig implements TransactionManagementConfigurer {
 
     @Bean
     UserDao userDao(){
-        return new UserDaoImpl(userResultSetExtractor(),userRowMapper());
+        return new UserDaoImpl(userRowMapper(),jdbcTemplate(),namedParameterJdbcTemplate(),integerResultSetExtractor());
     }
 
     @Bean
     TelephoneDao telephoneDao(){
-        return new TelephoneDaoImpl(telephoneResultSetExtractor(), telephoneRowMapper());
+        return new TelephoneDaoImpl(telephoneRowMapper(),jdbcTemplate(),namedParameterJdbcTemplate(),integerResultSetExtractor());
     }
 
     @Bean
     RoleDao roleDao(){
-        return new RoleDaoImpl(roleResultSetExtractor(), roleRowMapper());
+        return new RoleDaoImpl(roleRowMapper(),jdbcTemplate(),namedParameterJdbcTemplate(),integerResultSetExtractor());
+    }
+
+    @Bean
+    AuthService authService(){
+        return new AuthServiceImpl();
+    }
+
+    @Bean
+    UserService userService(){
+        return new UserServiceImpl(userDao());
+    }
+
+    @Bean
+    TelephoneService telephoneService(){
+        return new TelephoneServiceImpl(telephoneDao());
+    }
+
+    @Bean
+    RoleService roleService(){
+        return new RoleServiceImpl(roleDao());
     }
 }

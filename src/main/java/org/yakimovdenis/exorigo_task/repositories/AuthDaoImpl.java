@@ -19,7 +19,7 @@ public class AuthDaoImpl implements AuthDao {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     @Override
     public UserEntity authorize(String login, String password) {

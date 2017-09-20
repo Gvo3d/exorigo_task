@@ -31,12 +31,17 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean delete(Integer integer) {
-        return roleDaoImpl.delete(integer);
+    public void delete(Integer integer) {
+        roleDaoImpl.delete(integer);
     }
 
     @Override
     public boolean update(RoleEntity object) {
         return roleDaoImpl.update(object);
+    }
+
+    @Override
+    public void create(RoleEntity object) {
+        roleDaoImpl.create(object);
     }
 }

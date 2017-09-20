@@ -10,12 +10,11 @@ import java.sql.SQLException;
 
 @Component
 public class TelephoneRowMapper implements RowMapper<TelephoneEntity>{
-
-    @Autowired
-    private TelephoneResultSetExtractor telephoneResultSetExtractor;
-
     @Override
     public TelephoneEntity mapRow(ResultSet resultSet, int i) throws SQLException {
-        return telephoneResultSetExtractor.extractData(resultSet);
+        TelephoneEntity telephoneEntity = new TelephoneEntity();
+        telephoneEntity.setId(resultSet.getInt("id"));
+        telephoneEntity.setPhoneNumber(resultSet.getString("phonenum"));
+        return telephoneEntity;
     }
 }

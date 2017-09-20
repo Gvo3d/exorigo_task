@@ -11,11 +11,11 @@ import java.sql.SQLException;
 @Component
 public class RoleRowMapper implements RowMapper<RoleEntity> {
 
-    @Autowired
-    private RoleResultSetExtractor roleResultSetExtractor;
-
     @Override
     public RoleEntity mapRow(ResultSet resultSet, int i) throws SQLException {
-        return roleResultSetExtractor.extractData(resultSet);
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setId(resultSet.getInt("id"));
+        roleEntity.setRoleName(resultSet.getString("rolename"));
+        return roleEntity;
     }
 }

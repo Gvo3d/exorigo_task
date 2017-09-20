@@ -8,7 +8,7 @@ import java.util.Set;
 public class UserEntity{
     public static final String TABLE_NAME = "users";
 
-    private int id;
+    private Integer id;
     private String login;
     private String password;
     private String name;

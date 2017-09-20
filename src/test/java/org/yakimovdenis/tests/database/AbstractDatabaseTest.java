@@ -5,9 +5,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.yakimovdenis.exorigo_task.database_support.IntegerResultSetExtractor;
 import org.yakimovdenis.tests.AbstractTest;
 
-@ContextConfiguration(classes = {TestDAOConfig.class})
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
