@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Yourapp</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<p data-th-text="#{database.label}"/>
+Unformatted text:  <th th:text="${tms}"/><br/>
+Formatted text:  <th th:text="${#calendars.format(tms, 'dd MMM yyyy HH:mm')}"></th><br/>
+<img src="/res/1.jpeg" alt="альтернативный текст"/>
+</body>
+</html>

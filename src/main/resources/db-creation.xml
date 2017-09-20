@@ -1,0 +1,309 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="granted_authority" author="sharabaddin">
+        <createTable tableName="granted_authority">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="authority" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="users" author="dyakimov">
+        <createTable tableName="users">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_authorities_users" references="roles(id)"/>
+            </column>
+            <column name="enabled" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="users_to_authorities" author="sharabaddin">
+        <createTable tableName="users_to_authorities">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_authorities_users" references="users(id)"/>
+            </column>
+            <column name="auth_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_authorities__granted_authority"
+                             references="granted_authority(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="i18n" author="dyakimov">
+        <createTable tableName="i18n">
+            <column name="id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ru" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ua" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="us" type="text">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="product_parameters" author="dyakimov">
+        <createTable tableName="product_parameters">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name_i18n_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_product_parameter_name_to_i18n"
+                             references="i18n(id)"/>
+            </column>
+            <column name="ordinal" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="date_product_parameter_value" author="dyakimov">
+        <createTable tableName="date_product_parameter_value">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="data" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="auth_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_authorities__granted_authority"
+                             references="granted_authority(id)"/>
+            </column>
+            <column name="product_parameter_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_date_product_parameter_value_to_product_parameter"
+                             references="product_parameters(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="int_product_parameter_value" author="dyakimov">
+        <createTable tableName="int_product_parameter_value">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="data" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_parameter_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_int_product_parameter_value_to_product_parameter"
+                             references="product_parameters(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="float_product_parameter_value" author="dyakimov">
+        <createTable tableName="float_product_parameter_value">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="data" type="float">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_parameter_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_float_product_parameter_value_to_product_parameter"
+                             references="product_parameters(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="string_product_parameter_value" author="dyakimov">
+        <createTable tableName="string_product_parameter_value">
+            <column name="id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="i18n_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_string_product_parameter_to_i18n"
+                             references="i18n(id)"/>
+            </column>
+            <column name="product_parameter_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_string_product_parameter_value_to_product_parameter"
+                             references="product_parameters(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="photos" author="dyakimov">
+        <createTable tableName="photos">
+            <column name="id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="directory" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="filename" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="alternative_i18n_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_photos_alternative_to_i18n"
+                             references="i18n(id)"/>
+            </column>
+            <column name="author_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_photos_to_author" references="users(id)"/>
+            </column>
+            <column name="uploaded" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="products_to_photos" author="dyakimov">
+        <createTable tableName="products_to_photos">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_products_to_photos_for_product" references="products(id)"/>
+            </column>
+            <column name="photo_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_products_to_photos_for_photos"
+                             references="photos(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="page_meta" author="dyakimov">
+        <createTable tableName="page_meta">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title_i18n_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_pagemeta_title_to_i18n"
+                             references="i18n(id)"/>
+            </column>
+            <column name="keywords_i18n_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_pagemeta_keywords_to_i18n"
+                             references="i18n(id)"/>
+            </column>
+            <column name="description_i18n_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_pagemeta_description_to_i18n"
+                             references="i18n(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="products" author="dyakimov">
+        <createTable tableName="products">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name_i18n_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_string_product_name_to_i18n" references="i18n(id)"/>
+            </column>
+            <column name="author_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_products_to_author" references="users(id)"/>
+            </column>
+            <column name="created_date" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activated" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="storage" type="bigint">
+            </column>
+            <column name="pagemeta_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_products_to_pagemeta" references="page_meta(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="products_to_string_parameters" author="dyakimov">
+        <createTable tableName="products_to_string_parameters">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_string_product_parameters_to_product"
+                             references="products(id)"/>
+            </column>
+            <column name="parameter_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_products_to_string_product_parameters"
+                             references="string_product_parameter_value(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="products_to_float_parameters" author="dyakimov">
+        <createTable tableName="products_to_float_parameters">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_float_product_parameters_to_product"
+                             references="products(id)"/>
+            </column>
+            <column name="parameter_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_products_to_string_product_parameters"
+                             references="float_product_parameter_value(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="products_to_int_parameters" author="dyakimov">
+        <createTable tableName="products_to_int_parameters">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_int_product_parameters_to_product"
+                             references="products(id)"/>
+            </column>
+            <column name="parameter_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_products_to_string_product_parameters"
+                             references="int_product_parameter_value(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="products_to_date_parameters" author="dyakimov">
+        <createTable tableName="products_to_date_parameters">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_date_product_parameters_to_product"
+                             references="products(id)"/>
+            </column>
+            <column name="parameter_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_products_to_string_product_parameters"
+                             references="date_product_parameter_value(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin</title>
+    <link href="/res/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="logout">
+    <form id="logoutForm" method="post" action="@{/logout}" th:unless="${#httpServletRequest.remoteUser} == null">
+    </form>
+    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1> | <a
+        onclick="document.forms['logoutForm'].submit()">Dsqnb yf[eq</a><br/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/res/js/bootstrap.min.js"></script>
+
+</div>
+</body>
+</html>
