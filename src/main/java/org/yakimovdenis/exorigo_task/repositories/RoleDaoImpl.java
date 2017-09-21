@@ -1,6 +1,5 @@
 package org.yakimovdenis.exorigo_task.repositories;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,31 +11,28 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class RoleDaoImpl extends AbstractDao<RoleEntity, Integer> implements RoleDao {
+public class RoleDaoImpl extends AbstractDao<RoleEntity, Integer> implements Dao<RoleEntity, Integer> {
     private static final String UPDATE_QUERY = "UPDATE ${tablename} SET rolename = :rolename WHERE id = :id";
-
-    private RoleDao roleDao;
 
     public RoleDaoImpl(RoleRowMapper roleRowMapper, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, IntegerResultSetExtractor integerResultSetExtractor) {
         super(namedParameterJdbcTemplate, jdbcTemplate, integerResultSetExtractor);
         this.rowMapper = roleRowMapper;
-        this.roleDao = this;
     }
 
     public RoleEntity getEntity(Integer integer) {
-        return roleDao.getEntity(integer, RoleEntity.TABLE_NAME);
+        return super.getEntity(integer, RoleEntity.TABLE_NAME);
     }
 
     public boolean exists(Integer integer) {
-        return roleDao.exists(integer, RoleEntity.TABLE_NAME);
+        return super.exists(integer, RoleEntity.TABLE_NAME);
     }
 
     public List<RoleEntity> getAllEntities(String searcheableParameter, String searcheableValue, String orderingParameter, boolean isAscend) {
-        return roleDao.getAllEntities(searcheableParameter, searcheableValue, orderingParameter, isAscend, RoleEntity.TABLE_NAME);
+        return super.getAllEntities(searcheableParameter, searcheableValue, orderingParameter, isAscend, RoleEntity.TABLE_NAME);
     }
 
     public void delete(Integer integer) {
-        roleDao.delete(integer, RoleEntity.TABLE_NAME);
+        super.delete(integer, RoleEntity.TABLE_NAME);
     }
 
     @Override

@@ -14,15 +14,13 @@ import org.yakimovdenis.exorigo_task.model.UserEntity;
 import java.util.*;
 
 @Repository
-public class UserDaoImpl extends AbstractDao<UserEntity, Integer> implements UserDao {
+public class UserDaoImpl extends AbstractDao<UserEntity, Integer> {
     private static final String UPDATE_USER = "UPDATE ${tablename} u SET u.name = :name, u.surname = :surname, u. login = :login, u.role_id = :role_id WHERE u.id = :id";
     private static final String USER_PHONE_EXISTS = "SELECT id from ${tablename} WHERE user_id = :user_id AND phone_id = :phone_id";
     private static final String UPDATE_PASSWORD = "UPDATE ${tablename} u SET u.password = :password WHERE u.id = :id";
 
-    private UserDao userDao;
-
     @Autowired
-    private TelephoneDao telephoneDao;
+    private TelephoneDaoImpl telephoneDao;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -30,7 +28,6 @@ public class UserDaoImpl extends AbstractDao<UserEntity, Integer> implements Use
     public UserDaoImpl(UserRowMapper userRowMapper, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, IntegerResultSetExtractor integerResultSetExtractor) {
         super(namedParameterJdbcTemplate, jdbcTemplate, integerResultSetExtractor);
         this.rowMapper = userRowMapper;
-        this.userDao = this;
     }
 
     @Transactional(transactionManager = "transactionManager")
@@ -106,22 +103,21 @@ public class UserDaoImpl extends AbstractDao<UserEntity, Integer> implements Use
     }
 
     public UserEntity getEntity(Integer id) {
-        return userDao.getEntity(id, UserEntity.TABLE_NAME);
+        return super.getEntity(id, UserEntity.TABLE_NAME);
     }
 
     public boolean exists(Integer id) {
-        return userDao.exists(id, UserEntity.TABLE_NAME);
+        return super.exists(id, UserEntity.TABLE_NAME);
     }
 
     public List<UserEntity> getAllEntities(String searcheableParameter, String searcheableValue, String orderingParameter, boolean isAscend) {
-        return userDao.getAllEntities(searcheableParameter, searcheableValue, orderingParameter, isAscend, UserEntity.TABLE_NAME);
+        return super.getAllEntities(searcheableParameter, searcheableValue, orderingParameter, isAscend, UserEntity.TABLE_NAME);
     }
 
     public void delete(Integer id) {
-        userDao.delete(id, UserEntity.TABLE_NAME);
+        super.delete(id, UserEntity.TABLE_NAME);
     }
 
-    @Override
     public void updateUserPass(Integer id, String newPassword) {
         String query = UPDATE_PASSWORD.replace("${tablename}", UserEntity.TABLE_NAME);
         Map<String, Object> source = new HashMap<>();

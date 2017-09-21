@@ -1,20 +1,17 @@
 package org.yakimovdenis.exorigo_task.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yakimovdenis.exorigo_task.model.RoleEntity;
 import org.yakimovdenis.exorigo_task.model.TelephoneEntity;
-import org.yakimovdenis.exorigo_task.repositories.TelephoneDao;
 import org.yakimovdenis.exorigo_task.repositories.TelephoneDaoImpl;
 
 import java.util.List;
 
 @Service
 public class TelephoneServiceImpl implements TelephoneService {
-    private TelephoneDaoImpl telephoneDaoImpl;
 
-    public TelephoneServiceImpl(TelephoneDao telephoneDao) {
-        this.telephoneDaoImpl = (TelephoneDaoImpl) telephoneDao;
-    }
+    @Autowired
+    private TelephoneDaoImpl telephoneDaoImpl;
 
     @Override
     public TelephoneEntity getOne(Integer integer) {

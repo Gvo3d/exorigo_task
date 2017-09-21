@@ -13,17 +13,14 @@ import java.sql.SQLException;
 import java.util.*;
 
 @Repository
-public class TelephoneDaoImpl extends AbstractDao<TelephoneEntity, Integer> implements TelephoneDao {
+public class TelephoneDaoImpl extends AbstractDao<TelephoneEntity, Integer> {
     private static final String UPDATE_QUERY = "UPDATE ${tablename} SET phonenum = :phonenum WHERE id = :id";
     private static final String PHONES_FOR_USER = "SELECT phone_id FROM ${tablename} WHERE user_id = :user_id";
     private static final String PHONES_LIST_FOR_USER = "SELECT * FROM ${tablename} WHERE";
 
-    private TelephoneDao telephoneDao;
-
     public TelephoneDaoImpl(TelephoneRowMapper telephoneRowMapper, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, IntegerResultSetExtractor integerResultSetExtractor) {
         super(namedParameterJdbcTemplate, jdbcTemplate, integerResultSetExtractor);
         this.rowMapper = telephoneRowMapper;
-        this.telephoneDao = this;
     }
 
     @Override
@@ -44,7 +41,6 @@ public class TelephoneDaoImpl extends AbstractDao<TelephoneEntity, Integer> impl
         jdbcTemplate.execute(queryBuilder.toString());
     }
 
-    @Override
     public Set<TelephoneEntity> getPhonesForUser(Integer userId) {
         Set<TelephoneEntity> result = new HashSet<>();
         String query = PHONES_FOR_USER.replace("${tablename}", TelephoneEntity.TABLE_NAME_FOR_USER_RELATION);
@@ -72,18 +68,18 @@ public class TelephoneDaoImpl extends AbstractDao<TelephoneEntity, Integer> impl
     }
 
     public TelephoneEntity getEntity(Integer integer) {
-        return telephoneDao.getEntity(integer, TelephoneEntity.TABLE_NAME);
+        return super.getEntity(integer, TelephoneEntity.TABLE_NAME);
     }
 
     public boolean exists(Integer integer) {
-        return telephoneDao.exists(integer, TelephoneEntity.TABLE_NAME);
+        return super.exists(integer, TelephoneEntity.TABLE_NAME);
     }
 
     public List<TelephoneEntity> getAllEntities(String searcheableParameter, String searcheableValue, String orderingParameter, boolean isAscend) {
-        return telephoneDao.getAllEntities(searcheableParameter, searcheableValue, orderingParameter, isAscend, TelephoneEntity.TABLE_NAME);
+        return super.getAllEntities(searcheableParameter, searcheableValue, orderingParameter, isAscend, TelephoneEntity.TABLE_NAME);
     }
 
     public void delete(Integer integer) {
-        telephoneDao.delete(integer, TelephoneEntity.TABLE_NAME);
+        super.delete(integer, TelephoneEntity.TABLE_NAME);
     }
 }

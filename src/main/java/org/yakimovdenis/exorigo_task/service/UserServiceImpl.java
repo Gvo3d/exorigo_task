@@ -1,19 +1,17 @@
 package org.yakimovdenis.exorigo_task.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
-import org.yakimovdenis.exorigo_task.repositories.UserDao;
 import org.yakimovdenis.exorigo_task.repositories.UserDaoImpl;
 
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService{
-    private UserDaoImpl userDaoImpl;
 
-    public UserServiceImpl(UserDao userDao) {
-        this.userDaoImpl = (UserDaoImpl) userDao;
-    }
+    @Autowired
+    private UserDaoImpl userDaoImpl;
 
     @Override
     public UserEntity getOne(Integer integer) {

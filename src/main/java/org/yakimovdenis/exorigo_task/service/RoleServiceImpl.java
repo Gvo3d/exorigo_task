@@ -1,19 +1,17 @@
 package org.yakimovdenis.exorigo_task.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.yakimovdenis.exorigo_task.model.RoleEntity;
-import org.yakimovdenis.exorigo_task.repositories.RoleDao;
 import org.yakimovdenis.exorigo_task.repositories.RoleDaoImpl;
 
 import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-    private RoleDaoImpl roleDaoImpl;
 
-    public RoleServiceImpl(RoleDao roleDao) {
-        this.roleDaoImpl = (RoleDaoImpl) roleDao;
-    }
+    @Autowired
+    private RoleDaoImpl roleDaoImpl;
 
     @Override
     public RoleEntity getOne(Integer integer) {

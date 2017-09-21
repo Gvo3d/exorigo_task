@@ -5,8 +5,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.yakimovdenis.exorigo_task.model.RoleEntity;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
-import org.yakimovdenis.exorigo_task.repositories.RoleDao;
-import org.yakimovdenis.exorigo_task.repositories.TelephoneDao;
+import org.yakimovdenis.exorigo_task.repositories.RoleDaoImpl;
+import org.yakimovdenis.exorigo_task.repositories.TelephoneDaoImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,10 +15,10 @@ import java.sql.SQLException;
 public class UserRowMapper implements RowMapper<UserEntity> {
 
     @Autowired
-    RoleDao roleDao;
+    RoleDaoImpl roleDao;
 
     @Autowired
-    TelephoneDao telephoneDao;
+    TelephoneDaoImpl telephoneDao;
 
     @Override
     public UserEntity mapRow(ResultSet resultSet, int i) throws SQLException {
