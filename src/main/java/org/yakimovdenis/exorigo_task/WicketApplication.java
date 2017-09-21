@@ -1,32 +1,34 @@
 package org.yakimovdenis.exorigo_task;
 
-import org.apache.wicket.Page;
-import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import com.mkyong.user.SimplePage;
-import org.springframework.stereotype.Component;
-import org.yakimovdenis.exorigo_task.controllers.EditorPage;
-import org.yakimovdenis.exorigo_task.controllers.LoginPage;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 
-@Component
-public class WicketApplication extends WebApplication {
+import java.util.Arrays;
 
-	public Class<EditorPage> getEditorPage() {
-		return EditorPage.class;
+@SpringBootApplication
+public class WicketApplication {
+
+	public static void main(String[] args) throws Exception {
+		new SpringApplicationBuilder()
+			.sources(WicketApplication.class)
+			.run(args);
 	}
 
-	@Override
-	public Class<LoginPage> getHomePage() {
-		return LoginPage.class;
+	@Bean
+	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+		return args -> {
+
+			System.out.println("Let's inspect the beans provided by Spring Boot:");
+
+			String[] beanNames = ctx.getBeanDefinitionNames();
+			Arrays.sort(beanNames);
+			for (String beanName : beanNames) {
+				System.out.println(beanName);
+			}
+
+		};
 	}
-
-
-
-	@Override
-	protected void init() {
-		super.init();
-		addComponentInstantiationListener(new SpringComponentInjector(this));
-		 
-	}
-
 }
