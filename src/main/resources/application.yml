@@ -3,7 +3,7 @@ bootstrap:
 
 dataSource:
   driverClassName: org.postgresql.Driver
-  url: jdbc:postgresql://192.68.99.100:5432/exorigo
+  url: jdbc:postgresql://192.168.99.100:5432/exorigo
   username: exorigo
   password: root
   dialect: org.hibernate.dialect.PostgreSQLDialect

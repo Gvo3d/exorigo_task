@@ -54,16 +54,19 @@ public class TelephoneDaoImpl extends AbstractDao<TelephoneEntity, Integer> {
             }
         }));
 
-        query = PHONES_LIST_FOR_USER.replace("${tablename}", TelephoneEntity.TABLE_NAME);
-        StringBuilder querybuilder = new StringBuilder(query);
-        boolean first = true;
-        for (Integer phoneId: phoneIds) {
-            if (!first) {
-                querybuilder.append(" OR");
+        if (!phoneIds.isEmpty()) {
+            query = PHONES_LIST_FOR_USER.replace("${tablename}", TelephoneEntity.TABLE_NAME);
+            StringBuilder querybuilder = new StringBuilder(query);
+            boolean first = true;
+            for (Integer phoneId : phoneIds) {
+                if (!first) {
+                    querybuilder.append(" OR");
+                }
+                querybuilder.append(" id = " + phoneId);
+                first = false;
             }
-            querybuilder.append(" id = "+phoneId);
+            result.addAll(jdbcTemplate.query(querybuilder.toString(), rowMapper));
         }
-        result.addAll(jdbcTemplate.query(querybuilder.toString(), rowMapper));
         return result;
     }
 

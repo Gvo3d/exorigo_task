@@ -6,7 +6,22 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="roles" author="dyakimov">
+    <changeSet id="creation" author="dyakimov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roles" />
+            </not>
+            <not>
+                <tableExists tableName="phones" />
+            </not>
+            <not>
+                <tableExists tableName="users" />
+            </not>
+            <not>
+                <tableExists tableName="phones_users" />
+            </not>
+        </preConditions>
+
         <createTable tableName="roles">
             <column name="id" type="SERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -15,9 +30,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
 
-    <changeSet id="phones" author="dyakimov">
         <createTable tableName="phones">
             <column name="id" type="SERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -26,9 +39,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
 
-    <changeSet id="users" author="dyakimov">
         <createTable tableName="users">
             <column name="id" type="SERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -52,9 +63,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
 
-    <changeSet id="phones_users" author="dyakimov">
         <createTable tableName="phones_users">
             <column name="id" type="BIGSERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -67,6 +76,97 @@
                              references="phones(id)"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="dataFill" author="dyakimov">
+        <insert tableName="roles">
+            <column name="rolename" value="USER"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="rolename" value="ADMIN"/>
+        </insert>
+        <insert tableName="phones">
+            <column name="phonenum" value="123456"/>
+        </insert>
+        <insert tableName="phones">
+            <column name="phonenum" value="223456"/>
+        </insert>
+        <insert tableName="phones">
+            <column name="phonenum" value="323456"/>
+        </insert>
+        <insert tableName="phones">
+            <column name="phonenum" value="423456"/>
+        </insert>
+        <insert tableName="phones">
+            <column name="phonenum" value="523456"/>
+        </insert>
+        <insert tableName="phones">
+            <column name="phonenum" value="623456"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="name1"/>
+            <column name="surname" value="surname1"/>
+            <column name="login" value="login1"/>
+            <column name="password" value="pass1"/>
+            <column name="role_id" valueComputed="(SELECT id from roles where rolename='USER')"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="name2"/>
+            <column name="surname" value="surname2"/>
+            <column name="login" value="login2"/>
+            <column name="password" value="pass2"/>
+            <column name="role_id" valueComputed="(SELECT id from roles where rolename='USER')"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="name3"/>
+            <column name="surname" value="surname3"/>
+            <column name="login" value="login3"/>
+            <column name="password" value="pass3"/>
+            <column name="role_id" valueComputed="(SELECT id from roles where rolename='USER')"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="name4"/>
+            <column name="surname" value="surname4"/>
+            <column name="login" value="login4"/>
+            <column name="password" value="pass4"/>
+            <column name="role_id" valueComputed="(SELECT id from roles where rolename='ADMIN')"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="name5"/>
+            <column name="surname" value="surname5"/>
+            <column name="login" value="login5"/>
+            <column name="password" value="pass5"/>
+            <column name="role_id" valueComputed="(SELECT id from roles where rolename='ADMIN')"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="phones_users">
+            <column name="phone_id" valueComputed="(SELECT id from phones where phonenum='123456')"/>
+            <column name="user_id" valueComputed="(SELECT id from users where name='name1')"/>
+        </insert>
+        <insert tableName="phones_users">
+            <column name="phone_id" valueComputed="(SELECT id from phones where phonenum='223456')"/>
+            <column name="user_id" valueComputed="(SELECT id from users where name='name1')"/>
+        </insert>
+        <insert tableName="phones_users">
+            <column name="phone_id" valueComputed="(SELECT id from phones where phonenum='323456')"/>
+            <column name="user_id" valueComputed="(SELECT id from users where name='name2')"/>
+        </insert>
+        <insert tableName="phones_users">
+            <column name="phone_id" valueComputed="(SELECT id from phones where phonenum='423456')"/>
+            <column name="user_id" valueComputed="(SELECT id from users where name='name4')"/>
+        </insert>
+        <insert tableName="phones_users">
+            <column name="phone_id" valueComputed="(SELECT id from phones where phonenum='523456')"/>
+            <column name="user_id" valueComputed="(SELECT id from users where name='name4')"/>
+        </insert>
+        <insert tableName="phones_users">
+            <column name="phone_id" valueComputed="(SELECT id from phones where phonenum='623456')"/>
+            <column name="user_id" valueComputed="(SELECT id from users where name='name5')"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>

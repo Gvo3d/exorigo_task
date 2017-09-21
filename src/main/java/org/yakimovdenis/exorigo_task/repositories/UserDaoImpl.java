@@ -3,7 +3,7 @@ package org.yakimovdenis.exorigo_task.repositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.yakimovdenis.exorigo_task.database_support.IntegerResultSetExtractor;
@@ -22,8 +22,8 @@ public class UserDaoImpl extends AbstractDao<UserEntity, Integer> {
     @Autowired
     private TelephoneDaoImpl telephoneDao;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserDaoImpl(UserRowMapper userRowMapper, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, IntegerResultSetExtractor integerResultSetExtractor) {
         super(namedParameterJdbcTemplate, jdbcTemplate, integerResultSetExtractor);
@@ -122,6 +122,6 @@ public class UserDaoImpl extends AbstractDao<UserEntity, Integer> {
         String query = UPDATE_PASSWORD.replace("${tablename}", UserEntity.TABLE_NAME);
         Map<String, Object> source = new HashMap<>();
         source.put("id", id);
-        source.put("password", bCryptPasswordEncoder.encode(newPassword));
+//        source.put("password", bCryptPasswordEncoder.encode(newPassword));
     }
 }

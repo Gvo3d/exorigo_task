@@ -14,10 +14,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+import org.yakimovdenis.exorigo_task.WicketApplication;
 import org.yakimovdenis.exorigo_task.database_support.IntegerResultSetExtractor;
 import org.yakimovdenis.exorigo_task.database_support.RoleRowMapper;
 import org.yakimovdenis.exorigo_task.database_support.TelephoneRowMapper;
@@ -55,7 +56,7 @@ public class JdbcConfiguration implements TransactionManagementConfigurer {
         try {
             conn = DriverManager.getConnection(url,connectionProps);
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(conn));
-            Liquibase liquibase = new liquibase.Liquibase("resources/db-creation.xml", new ClassLoaderResourceAccessor(), database);
+            Liquibase liquibase = new liquibase.Liquibase("db-creation.xml", new ClassLoaderResourceAccessor(), database);
             liquibase.update(new Contexts(), new LabelExpression());
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,10 +98,10 @@ public class JdbcConfiguration implements TransactionManagementConfigurer {
         return new JdbcTemplate(dataSource());
     }
 
-    @Bean
-    BCryptPasswordEncoder bCryptPasswordEncoder(){
-        return new BCryptPasswordEncoder(11);
-    }
+//    @Bean
+//    BCryptPasswordEncoder bCryptPasswordEncoder(){
+//        return new BCryptPasswordEncoder(11);
+//    }
 
     @Bean
     IntegerResultSetExtractor integerResultSetExtractor(){
@@ -122,10 +123,10 @@ public class JdbcConfiguration implements TransactionManagementConfigurer {
         return new RoleRowMapper();
     }
 
-    @Bean
-    AuthDao authDao(){
-        return new AuthDaoImpl();
-    }
+//    @Bean
+//    AuthDao authDao(){
+//        return new AuthDaoImpl();
+//    }
 
     @Bean
     UserDaoImpl userDaoImpl(){
@@ -142,10 +143,10 @@ public class JdbcConfiguration implements TransactionManagementConfigurer {
         return new RoleDaoImpl(roleRowMapper(),jdbcTemplate(),namedParameterJdbcTemplate(),integerResultSetExtractor());
     }
 
-    @Bean
-    AuthService authService(){
-        return new AuthServiceImpl();
-    }
+//    @Bean
+//    AuthService authService(){
+//        return new AuthServiceImpl();
+//    }
 
     @Bean
     UserService userService(){
