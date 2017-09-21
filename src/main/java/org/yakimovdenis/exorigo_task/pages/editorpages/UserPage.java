@@ -1,4 +1,4 @@
-package org.yakimovdenis.exorigo_task.pages.annotationscan;
+package org.yakimovdenis.exorigo_task.pages.editorpages;
 
 import com.giffing.wicket.spring.boot.context.scan.WicketHomePage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;

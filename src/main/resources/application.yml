@@ -1,2 +1,9 @@
 bootstrap:
   theme: paper
+
+dataSource:
+  driverClassName: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/exorigo
+  username: exorigo
+  password: root
+  dialect: org.hibernate.dialect.PostgreSQLDialect

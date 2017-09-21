@@ -1,4 +1,4 @@
-package org.yakimovdenis.exorigo_task.pages.annotationscan;
+package org.yakimovdenis.exorigo_task.pages.editorpages;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.wicketstuff.annotation.mount.MountPath;

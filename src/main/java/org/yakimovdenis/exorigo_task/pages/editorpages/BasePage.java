@@ -1,4 +1,4 @@
-package org.yakimovdenis.exorigo_task.pages.annotationscan;
+package org.yakimovdenis.exorigo_task.pages.editorpages;
 
 import org.apache.wicket.markup.html.GenericWebPage;
 import org.apache.wicket.model.Model;
