@@ -1,20 +1,36 @@
 package org.yakimovdenis.exorigo_task;
 
+import org.apache.wicket.Page;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.yakimovdenis.exorigo_task.pages.HomePage;
 
 import java.util.Arrays;
 
 @SpringBootApplication
-public class WicketApplication {
+public class WicketApplication extends WebApplication {
 
 	public static void main(String[] args) throws Exception {
 		new SpringApplicationBuilder()
 			.sources(WicketApplication.class)
 			.run(args);
+	}
+
+	@Override
+	public Class<HomePage> getHomePage() {
+		return HomePage.class;
+	}
+
+	@Override
+	protected void init() {
+		super.init();
+		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 	}
 
 	@Bean

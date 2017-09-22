@@ -13,6 +13,7 @@ import java.util.Map;
 @Repository
 public class RoleDaoImpl extends AbstractDao<RoleEntity, Integer> implements Dao<RoleEntity, Integer> {
     private static final String UPDATE_QUERY = "UPDATE ${tablename} SET rolename = :rolename WHERE id = :id";
+    private static final String GET_BY_ROLENAME = "SELECT * FROM ${tablename} WHERE rolename = :rolename";
 
     public RoleDaoImpl(RoleRowMapper roleRowMapper, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, IntegerResultSetExtractor integerResultSetExtractor) {
         super(namedParameterJdbcTemplate, jdbcTemplate, integerResultSetExtractor);
@@ -51,5 +52,12 @@ public class RoleDaoImpl extends AbstractDao<RoleEntity, Integer> implements Dao
         queryBuilder.append(object.getRoleName());
         queryBuilder.append("')");
         jdbcTemplate.execute(queryBuilder.toString());
+    }
+
+    public RoleEntity getEntityByRolename(String roleName) {
+        String query = GET_BY_ROLENAME.replace("${tablename}", RoleEntity.TABLE_NAME);
+        Map<String, Object> source = new HashMap<>();
+        source.put("rolename", roleName);
+        return namedParameterJdbcTemplate.query(query, source, rowMapper).get(0);
     }
 }

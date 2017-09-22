@@ -1,0 +1,14 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+    border-width: 5px;
+    border-style: groove;
+    padding: 5px 5px 5px 5px;
+    background-position: right;
+    background-repeat:no-repeat;
+}
+
+th {
+    height: 50px;
+}

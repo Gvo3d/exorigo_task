@@ -42,4 +42,9 @@ public class RoleServiceImpl implements RoleService {
     public void create(RoleEntity object) {
         roleDaoImpl.create(object);
     }
+
+    @Override
+    public RoleEntity getEntityByRolename(String roleName) {
+        return roleDaoImpl.getEntityByRolename(roleName);
+    }
 }

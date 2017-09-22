@@ -7,7 +7,6 @@ import org.yakimovdenis.exorigo_task.pages.editorpages.UserPage;
 
 @WicketHomePage
 public class HomePage extends WebPage {
-	
 	public HomePage() {
 		Form form = new Form("form"){
 			@Override

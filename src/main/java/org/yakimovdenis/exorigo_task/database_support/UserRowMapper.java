@@ -13,6 +13,7 @@ import java.sql.SQLException;
 
 @Component
 public class UserRowMapper implements RowMapper<UserEntity> {
+    private static final String USER_PASSWORD = "[secured]";
 
     @Autowired
     RoleDaoImpl roleDao;
@@ -26,7 +27,7 @@ public class UserRowMapper implements RowMapper<UserEntity> {
         user.setId(resultSet.getInt("id"));
         user.setEnabled(resultSet.getBoolean("enabled"));
         user.setLogin(resultSet.getString("login"));
-        user.setPassword("******");
+        user.setPassword(USER_PASSWORD);
         user.setName(resultSet.getString("name"));
         user.setSurname(resultSet.getString("surname"));
         user.setRole(roleDao.getEntity(resultSet.getInt("role_id"), RoleEntity.TABLE_NAME));

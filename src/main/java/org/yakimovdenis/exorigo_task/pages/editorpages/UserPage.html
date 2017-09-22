@@ -1,10 +1,14 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
     <title>Wicket!</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body style="padding-top: 60px">
 <header wicket:id="navbar" class="bs-docs-nav"></header>
 <wicket:child/>
-<table wicket:id="datatable"></table>
+<form style="padding-top: 5px" wicket:id="create">
+    <input type="submit" value="Create new user"/>
+</form>
+<table class="table" wicket:id="datatable"></table>
 </body>
 </html>
