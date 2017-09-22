@@ -17,6 +17,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValue;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
 import org.yakimovdenis.exorigo_task.pages.ErrorPage;
 import org.yakimovdenis.exorigo_task.service.RoleService;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 
 public class CreateUser extends BasePage {
     private String selected;
+    private UserEntity selectedUser;
 
     @SpringBean
     private UserService userService;
@@ -38,16 +40,34 @@ public class CreateUser extends BasePage {
 
     public CreateUser(final PageParameters parameters) {
         super(parameters);
+        List<String> roleList=null;
+        StringValue sv = parameters.get("userId");
+        Integer seracheable = sv.toInteger();
+
+        String sname="";
+        String ssurname="";
+        String slogin="";
+        String spassword="";
+
+        if (null==seracheable){
         add(newNavbar("cuenavbar"));
-        List<String> roleList = roleService.getAll(null,null,null,false).stream().map(role -> role.getRoleName()).collect(Collectors.toList());
+        roleList = roleService.getAll(null,null,null,false).stream().map(role -> role.getRoleName()).collect(Collectors.toList());
         selected =  roleList.get(0);
+        } else {
+            selectedUser = userService.getOne(seracheable);
+            sname=selectedUser.getName();
+            ssurname=selectedUser.getSurname();
+            slogin=selectedUser.getLogin();
+            spassword=selectedUser.getPassword();
+            selected=selectedUser.getRole().getRoleName();
+        }
 
         add(new FeedbackPanel("feedback"));
 
-        final TextField<String> name = new TextField<String>("name", Model.of(""));
-        final TextField<String> surname = new TextField<String>("surname", Model.of(""));
-        final TextField<String> login = new TextField<String>("login", Model.of(""));
-        final TextField<String> password = new TextField<String>("password", Model.of(""));
+        final TextField<String> name = new TextField<String>("name", Model.of(sname));
+        final TextField<String> surname = new TextField<String>("surname", Model.of(ssurname));
+        final TextField<String> login = new TextField<String>("login", Model.of(slogin));
+        final TextField<String> password = new TextField<String>("password", Model.of(spassword));
         final DropDownChoice<String> listSites = new DropDownChoice<String>(
                 "roles", new PropertyModel<String>(this, "selected"), roleList);
 
@@ -65,20 +85,28 @@ public class CreateUser extends BasePage {
         Form<?> form = new Form<Void>("userForm") {
             @Override
             protected void onSubmit() {
-                final String nameValue = name.getModelObject();
-                final String surnameValue = surname.getModelObject();
-                final String loginValue = login.getModelObject();
-                final String passwordValue = password.getModelObject();
+                if (null==selectedUser) {
+                    final String nameValue = name.getModelObject();
+                    final String surnameValue = surname.getModelObject();
+                    final String loginValue = login.getModelObject();
+                    final String passwordValue = password.getModelObject();
 
-                UserEntity newUser = new UserEntity();
-                newUser.setName(name.getModelObject());
-                newUser.setSurname(surname.getModelObject());
-                newUser.setLogin(login.getModelObject());
-                newUser.setPassword(password.getModelObject());
-                newUser.setEnabled(true);
-                newUser.setRole(roleService.getEntityByRolename(selected));
-                userService.create(newUser);
-                setResponsePage(UserPage.class);
+                    UserEntity newUser = new UserEntity();
+                    newUser.setName(name.getModelObject());
+                    newUser.setSurname(surname.getModelObject());
+                    newUser.setLogin(login.getModelObject());
+                    newUser.setPassword(password.getModelObject());
+                    newUser.setEnabled(true);
+                    newUser.setRole(roleService.getEntityByRolename(selected));
+                    userService.create(newUser);
+                    setResponsePage(UserPage.class);
+                } else {
+                    selectedUser.setName(name.getModelObject());
+                    selectedUser.setSurname(surname.getModelObject());
+                    selectedUser.setLogin(login.getModelObject());
+                    selectedUser.setPassword(password.getModelObject());
+                    userService.update(selectedUser);
+                }
             }
         };
 
