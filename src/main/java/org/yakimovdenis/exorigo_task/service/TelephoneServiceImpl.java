@@ -6,6 +6,7 @@ import org.yakimovdenis.exorigo_task.model.TelephoneEntity;
 import org.yakimovdenis.exorigo_task.repositories.TelephoneDaoImpl;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TelephoneServiceImpl implements TelephoneService {
@@ -51,5 +52,15 @@ public class TelephoneServiceImpl implements TelephoneService {
     @Override
     public void setSavePhoneForUser(Integer userId, Integer phoneId) {
         telephoneDaoImpl.setSavePhoneForUser(userId, phoneId);
+    }
+
+    @Override
+    public Set<TelephoneEntity> getPhonesForUser(Integer userId) {
+        return telephoneDaoImpl.getPhonesForUser(userId);
+    }
+
+    @Override
+    public Integer getPhoneIdWirhPhonenum(String phoneNum) {
+        return telephoneDaoImpl.getPhoneIdWirhPhonenum(phoneNum);
     }
 }

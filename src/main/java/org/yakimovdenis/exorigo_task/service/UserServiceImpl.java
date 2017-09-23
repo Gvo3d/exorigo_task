@@ -42,4 +42,9 @@ public class UserServiceImpl implements UserService{
     public void create(UserEntity object) {
         userDaoImpl.create(object);
     }
+
+    @Override
+    public void updateUserPass(Integer id, String newPassword) {
+        userDaoImpl.updateUserPass(id, newPassword);
+    }
 }

@@ -18,8 +18,12 @@ public class TelephoneProvider extends SortableDataProvider {
 
     public TelephoneProvider(TelephoneService telephoneService) {
         this.telephoneService = telephoneService;
-        setSort("name", SortOrder.ASCENDING);
+        setSort("id", SortOrder.ASCENDING);
         list.addAll(telephoneService.getAll(null, null, null, false));
+    }
+
+    public void populateTelephoneList(List<TelephoneEntity> telephones){
+        list = telephones;
     }
 
     public Iterator<TelephoneEntity> iterator(long first, long count) {

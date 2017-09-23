@@ -2,7 +2,6 @@ package org.yakimovdenis.exorigo_task.pages.editorpages;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.Navbar;
 import org.apache.wicket.feedback.FeedbackMessage;
-import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -12,6 +11,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.yakimovdenis.exorigo_task.components.ExactErrorLevelFilter;
 import org.yakimovdenis.exorigo_task.components.StringRegexValidator;
 import org.yakimovdenis.exorigo_task.model.TelephoneEntity;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
@@ -35,35 +35,51 @@ public class CreatePhone extends BasePage {
     public CreatePhone(final PageParameters parameters) {
         super(parameters);
         add(newNavbar("cuenavbar"));
-        Set<UserEntity> usersFromDb = new TreeSet<UserEntity>(new UserComparator());
+        Set<UserEntity> usersFromDb = new TreeSet<UserEntity>(new BackwardUserComparator());
         usersFromDb.addAll(userService.getAll(null, null, null, false));
-        usersList = usersFromDb.stream().collect(Collectors.toMap(UserEntity::getId, x-> x.getSurname()+" "+x.getName()));
+        usersList = usersFromDb.stream().collect(Collectors.toMap(UserEntity::getId, x -> x.getSurname() + " " + x.getName()));
         usersList.put(null, "NONE");
         List<String> userNamesList = new ArrayList<>();
         userNamesList.addAll(usersList.values());
 
         Integer searcheablePhone;
-        try{
+        try {
             searcheablePhone = parameters.get("targetId").toInteger();
-        } catch (Exception e){
-            searcheablePhone  =null;
+        } catch (Exception e) {
+            searcheablePhone = null;
         }
+        Integer holderId;
+        try {
+            holderId = parameters.get("holderId").toInteger();
+            parameters.remove("holderId");
+        } catch (Exception e) {
+            holderId = null;
+        }
+
         String sphoneNum = "";
-        String submitString="Create new phone";
+        String submitString = "Create new phone";
 
         if (null == searcheablePhone) {
             selected = usersList.get(null);
         } else {
             selectedPhone = phoneService.getOne(searcheablePhone);
             sphoneNum = selectedPhone.getPhoneNumber();
-            selected = usersList.get(phoneService.getUserForPhone(searcheablePhone));
+            try {
+                selected = usersList.get(phoneService.getUserForPhone(searcheablePhone));
+            } catch (Exception e){
+                selected = usersList.get(null);
+            }
             submitString = "Update existing phone";
+        }
+
+        if (null!=holderId){
+            selected = usersList.get(holderId);
         }
 
         add(new FeedbackPanel("feedback"));
 
-        final TextField<String> phoneNum = new TextField<String>("name", Model.of(sphoneNum));
-        final DropDownChoice<String> listSites = new DropDownChoice<String>(
+        final TextField<String> phoneNum = new TextField<String>("phoneNum", Model.of(sphoneNum));
+        final DropDownChoice<String> usersForPhones = new DropDownChoice<String>(
                 "users", new PropertyModel<String>(this, "selected"), userNamesList);
         final Button submitLabel = new Button("submitb", Model.of(submitString));
 
@@ -77,40 +93,30 @@ public class CreatePhone extends BasePage {
                 if (null == selectedPhone) {
                     TelephoneEntity newPhone = new TelephoneEntity();
                     newPhone.setPhoneNumber(phoneNum.getModelObject());
-                    if (!selected.equals("NONE")){
-                        Integer key = null;
-                        for (Map.Entry<Integer, String> entry: usersList.entrySet()){
-                            if (entry.getValue().equals(selected)){
-                                key = entry.getKey();
-                            }
-                        }
-                        phoneService.setSavePhoneForUser(key, );
+                    phoneService.create(newPhone);
+                    if (!selected.equals("NONE")) {
+                        newPhone.setId(phoneService.getPhoneIdWirhPhonenum(newPhone.getPhoneNumber()));
+                        savePhoneForUser(newPhone);
                     }
-                    phoneService.create(newUser);
-                    setResponsePage(UserPage.class);
                 } else {
-                    selectedUser.setName(phoneNum.getModelObject());
-                    selectedUser.setSurname(surname.getModelObject());
-                    selectedUser.setLogin(login.getModelObject());
-                    selectedUser.setEnabled(enabled.getModelObject());
-                    if (!selectedUser.getRole().getRoleName().equals(selected)) {
-                        selectedUser.setRole(roleService.getEntityByRolename(selected));
+                    selectedPhone.setPhoneNumber(phoneNum.getModelObject());
+                    phoneService.update(selectedPhone);
+                    if (!selected.equals("NONE")) {
+                        savePhoneForUser(selectedPhone);
                     }
-                    phoneService.update(selectedUser);
                 }
-                setResponsePage(UserPage.class);
+                setResponsePage(TelephonePage.class);
             }
         };
 
         Button button1 = new Button("goBack") {
             public void onSubmit() {
-                setResponsePage(UserPage.class);
+                setResponsePage(TelephonePage.class);
             }
-
             @Override
             public void onError() {
                 super.onError();
-                setResponsePage(UserPage.class);
+                setResponsePage(TelephonePage.class);
             }
         };
         form.add(button1);
@@ -118,13 +124,18 @@ public class CreatePhone extends BasePage {
         add(new FeedbackPanel("feedbackMessage", new ExactErrorLevelFilter(FeedbackMessage.ERROR)));
         add(form);
         form.add(phoneNum);
-        form.add(surname);
-        form.add(login);
-        form.add(password);
-        form.add(enabled);
-        form.add(passLabel);
-        form.add(listSites);
+        form.add(usersForPhones);
         form.add(submitLabel);
+    }
+
+    private void savePhoneForUser(TelephoneEntity newPhone) {
+        Integer key = null;
+        for (Map.Entry<Integer, String> entry : usersList.entrySet()) {
+            if (entry.getValue().equals(selected)) {
+                key = entry.getKey();
+            }
+        }
+        phoneService.setSavePhoneForUser(key, newPhone.getId());
     }
 
     protected Navbar newNavbar(String markupId) {
@@ -135,22 +146,11 @@ public class CreatePhone extends BasePage {
         return navbar;
     }
 
-    private class UserComparator implements Comparator<UserEntity> {
+    private class BackwardUserComparator implements Comparator<UserEntity> {
         @Override
         public int compare(UserEntity o1, UserEntity o2) {
-            return -1*o1.getId().compareTo(o2.getId());
+            return -1 * o1.getId().compareTo(o2.getId());
         }
     }
 
-    class ExactErrorLevelFilter implements IFeedbackMessageFilter {
-        private int errorLevel;
-
-        public ExactErrorLevelFilter(int errorLevel) {
-            this.errorLevel = errorLevel;
-        }
-
-        public boolean accept(FeedbackMessage message) {
-            return message.getLevel() == errorLevel;
-        }
-    }
 }

@@ -11,6 +11,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
+import org.yakimovdenis.exorigo_task.components.ExactErrorLevelFilter;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
 import org.yakimovdenis.exorigo_task.service.RoleService;
 import org.yakimovdenis.exorigo_task.service.UserService;
@@ -143,24 +144,12 @@ public class CreateUser extends BasePage {
         form.add(submitLabel);
     }
 
-    protected Navbar newNavbar(String markupId) {
+    public Navbar newNavbar(String markupId) {
         Navbar navbar = new Navbar(markupId);
         navbar.setPosition(Navbar.Position.TOP);
         navbar.setInverted(true);
         navbar.setBrandName(Model.of("EXORIGO"));
         return navbar;
-    }
-
-    class ExactErrorLevelFilter implements IFeedbackMessageFilter {
-        private int errorLevel;
-
-        public ExactErrorLevelFilter(int errorLevel) {
-            this.errorLevel = errorLevel;
-        }
-
-        public boolean accept(FeedbackMessage message) {
-            return message.getLevel() == errorLevel;
-        }
     }
 }
 

@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
@@ -98,14 +99,9 @@ public class JdbcConfiguration implements TransactionManagementConfigurer {
         return new JdbcTemplate(dataSource());
     }
 
-//    @Bean
-//    BCryptPasswordEncoder bCryptPasswordEncoder(){
-//        return new BCryptPasswordEncoder(11);
-//    }
-
     @Bean
     IntegerResultSetExtractor integerResultSetExtractor(){
-        return new IntegerResultSetExtractor();
+        return new IntegerResultSetExtractor("count");
     }
 
     @Bean
@@ -123,11 +119,6 @@ public class JdbcConfiguration implements TransactionManagementConfigurer {
         return new RoleRowMapper();
     }
 
-//    @Bean
-//    AuthDao authDao(){
-//        return new AuthDaoImpl();
-//    }
-
     @Bean
     UserDaoImpl userDaoImpl(){
         return new UserDaoImpl(userRowMapper(),jdbcTemplate(),namedParameterJdbcTemplate(),integerResultSetExtractor());
@@ -143,23 +134,8 @@ public class JdbcConfiguration implements TransactionManagementConfigurer {
         return new RoleDaoImpl(roleRowMapper(),jdbcTemplate(),namedParameterJdbcTemplate(),integerResultSetExtractor());
     }
 
-//    @Bean
-//    AuthService authService(){
-//        return new AuthServiceImpl();
-//    }
-
     @Bean
-    UserService userService(){
-        return new UserServiceImpl();
-    }
-
-    @Bean
-    TelephoneService telephoneService(){
-        return new TelephoneServiceImpl();
-    }
-
-    @Bean
-    RoleService roleService(){
-        return new RoleServiceImpl();
+    AuthDao authDao(){
+        return new AuthDaoImpl();
     }
 }

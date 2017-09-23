@@ -9,7 +9,8 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
-import org.yakimovdenis.exorigo_task.components.UserEntityLinkColumn;
+import org.yakimovdenis.exorigo_task.components.CustomEntityLinkColumn;
+import org.yakimovdenis.exorigo_task.model.EntityType;
 import org.yakimovdenis.exorigo_task.providers.UserProvider;
 import org.yakimovdenis.exorigo_task.service.UserService;
 
@@ -43,8 +44,9 @@ public class UserPage extends BasePage {
         columnsList.add(new PropertyColumn(new StringResourceModel("pas", this, null), "password", "password"));
         columnsList.add(new PropertyColumn(new StringResourceModel("rol", this, null), "role.roleName", "role.roleName"));
         columnsList.add(new PropertyColumn(new StringResourceModel("enb", this, null), "enabled", "enabled"));
-        columnsList.add(new UserEntityLinkColumn(new Model<String>("Edit"), CreateUser.class));
-        columnsList.add(new UserEntityLinkColumn(new Model<String>("Phones"), UserToPhonesList.class));
+        columnsList.add(new CustomEntityLinkColumn(new Model<String>("Edit"), CreateUser.class,null));
+        columnsList.add(new CustomEntityLinkColumn(new Model<String>("Phones"), TelephonePage.class,null));
+        columnsList.add(new CustomEntityLinkColumn(new Model<String>("Delete"), DeleteEntity.class,EntityType.USER.name()));
 
         DefaultDataTable table = new DefaultDataTable("datatable", columnsList, dataProvider, 3);
 

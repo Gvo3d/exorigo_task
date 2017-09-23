@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class TelephoneEntity implements Serializable{
+public class TelephoneEntity implements Serializable, IdentifiableEntity{
     public static final String TABLE_NAME = "phones";
     public static final String TABLE_NAME_FOR_USER_RELATION = "phones_users";
     public static final String PHONENUM_REGEX = "\\d{6,20}";

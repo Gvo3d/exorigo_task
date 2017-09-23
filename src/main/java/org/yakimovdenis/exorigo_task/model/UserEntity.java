@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Data
-public class UserEntity implements Serializable{
+public class UserEntity implements Serializable, IdentifiableEntity{
     public static final String TABLE_NAME = "users";
     public static final String NAME_REGEX = "\\w{3,50}";
     public static final String SURNAME_REGEX = "\\w{3,50}";
