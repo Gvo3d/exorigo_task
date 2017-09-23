@@ -43,12 +43,12 @@ public class UserPage extends BasePage {
         columnsList.add(new PropertyColumn(new StringResourceModel("pas", this, null), "password", "password"));
         columnsList.add(new PropertyColumn(new StringResourceModel("rol", this, null), "role.roleName", "role.roleName"));
         columnsList.add(new PropertyColumn(new StringResourceModel("enb", this, null), "enabled", "enabled"));
-        columnsList.add(new UserEntityLinkColumn(new Model<String>("Editable"), CreateUser.class));
+        columnsList.add(new UserEntityLinkColumn(new Model<String>("Edit"), CreateUser.class));
+        columnsList.add(new UserEntityLinkColumn(new Model<String>("Phones"), UserToPhonesList.class));
 
         DefaultDataTable table = new DefaultDataTable("datatable", columnsList, dataProvider, 3);
 
         add(table);
-        }
-
     }
+}
 

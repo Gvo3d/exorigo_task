@@ -1,4 +1,4 @@
-package org.yakimovdenis.exorigo_task.support;
+package org.yakimovdenis.exorigo_task.components;
 
 import org.apache.wicket.validation.CompoundValidator;
 import org.apache.wicket.validation.validator.PatternValidator;

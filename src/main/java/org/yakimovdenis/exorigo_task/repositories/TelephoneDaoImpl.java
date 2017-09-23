@@ -17,6 +17,8 @@ public class TelephoneDaoImpl extends AbstractDao<TelephoneEntity, Integer> {
     private static final String UPDATE_QUERY = "UPDATE ${tablename} SET phonenum = :phonenum WHERE id = :id";
     private static final String PHONES_FOR_USER = "SELECT phone_id FROM ${tablename} WHERE user_id = :user_id";
     private static final String PHONES_LIST_FOR_USER = "SELECT * FROM ${tablename} WHERE";
+    private static final String USER_FOR_PHONE = "SELECT user_id FROM ${tablename} WHERE phone_id = :phone_id";
+    private static final String SAVE_PHONE_FOR_USER = "INSERT INTO ${tablename} (user_ID, phone_id) VALUES ( :user_id, :phone_id)";
 
     public TelephoneDaoImpl(TelephoneRowMapper telephoneRowMapper, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, IntegerResultSetExtractor integerResultSetExtractor) {
         super(namedParameterJdbcTemplate, jdbcTemplate, integerResultSetExtractor);
@@ -84,5 +86,20 @@ public class TelephoneDaoImpl extends AbstractDao<TelephoneEntity, Integer> {
 
     public void delete(Integer integer) {
         super.delete(integer, TelephoneEntity.TABLE_NAME);
+    }
+
+    public Integer getUserForPhone(Integer phoneId){
+        String query = USER_FOR_PHONE.replace("${tablename}", TelephoneEntity.TABLE_NAME_FOR_USER_RELATION);
+        Map<String, Object> source = new HashMap<>();
+        source.put("phone_id", phoneId);
+        return namedParameterJdbcTemplate.update(query, source);
+    }
+
+    public void setSavePhoneForUser(Integer userId, Integer phoneId){
+        String query = SAVE_PHONE_FOR_USER.replace("${tablename}", TelephoneEntity.TABLE_NAME_FOR_USER_RELATION);
+        Map<String, Object> source = new HashMap<>();
+        source.put("phone_id", phoneId);
+        source.put("user_id", userId);
+        namedParameterJdbcTemplate.update(query, source);
     }
 }

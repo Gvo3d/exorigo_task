@@ -42,4 +42,14 @@ public class TelephoneServiceImpl implements TelephoneService {
     public void create(TelephoneEntity object) {
         telephoneDaoImpl.create(object);
     }
+
+    @Override
+    public Integer getUserForPhone(Integer phoneId) {
+        return telephoneDaoImpl.getUserForPhone(phoneId);
+    }
+
+    @Override
+    public void setSavePhoneForUser(Integer userId, Integer phoneId) {
+        telephoneDaoImpl.setSavePhoneForUser(userId, phoneId);
+    }
 }

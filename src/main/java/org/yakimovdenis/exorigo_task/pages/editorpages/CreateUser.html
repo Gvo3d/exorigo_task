@@ -5,6 +5,7 @@
 <body style="padding-top: 60px">
 <header wicket:id="cuenavbar" class="bs-docs-nav"></header>
 <wicket:child/>
+
 <form wicket:id="userForm">
     <p>
         <label>Username</label>:
@@ -19,7 +20,7 @@
         <input style="width: 100%;padding: 12px 20px;margin: 8px 0;box-sizing: border-box;" wicket:id="login" type="text" size="50" />
     </p>
     <p>
-        <label>Password</label>:
+        <label wicket:id="passLabel">Password</label>:
         <input style="width: 100%;padding: 12px 20px;margin: 8px 0;box-sizing: border-box;" wicket:id="password" type="text" size="50" />
     </p>
     <p>
@@ -27,8 +28,12 @@
         <br />
         <select style="width: 100%;padding: 16px 20px;border: none;border-radius: 4px;background-color: #f1f1f1;"wicket:id="roles"></select>
     </p>
-    <input style="background-color: #4CAF50;border: none;color: white;padding: 16px 32px;text-decoration: none;margin: 4px 2px;cursor: pointer;" type="submit" value="Create new user" />
-    <input wicket:id="goBack" style="background-color: #00AFF0;border: none;color: white;padding: 16px 32px;text-decoration: none;margin: 4px 2px;cursor: pointer;" type="button">Cancel</input>
+    <p>
+        <label>Enabled</label>:
+        <input type="checkbox" wicket:id="enabled" />
+    </p>
+    <input wicket:id="submitb" style="width: 200px;background-color: #4CAF50;border: none;color: white;padding: 16px 32px;text-decoration: none;margin: 4px 2px;cursor: pointer;" type="submit"></input>
+    <button wicket:id="goBack" style="width: 200px;background-color: #00AFF0;border: none;color: white;padding: 16px 32px;text-decoration: none;margin: 4px 2px;cursor: pointer;">Cancel</button>
 </form>
 <div style="color:red" wicket:id="feedbackMessage">
 </div>

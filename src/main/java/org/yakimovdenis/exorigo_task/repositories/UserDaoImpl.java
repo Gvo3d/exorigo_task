@@ -15,7 +15,7 @@ import java.util.*;
 
 @Repository
 public class UserDaoImpl extends AbstractDao<UserEntity, Integer> {
-    private static final String UPDATE_USER = "UPDATE ${tablename} u SET u.name = :name, u.surname = :surname, u. login = :login, u.role_id = :role_id WHERE u.id = :id";
+    private static final String UPDATE_USER = "UPDATE ${tablename}  SET name = :name, surname = :surname, login = :login, role_id = :role_id, enabled = :enabled WHERE id = :id";
     private static final String USER_PHONE_EXISTS = "SELECT id from ${tablename} WHERE user_id = :user_id AND phone_id = :phone_id";
     private static final String UPDATE_PASSWORD = "UPDATE ${tablename} u SET u.password = :password WHERE u.id = :id";
 
@@ -40,6 +40,7 @@ public class UserDaoImpl extends AbstractDao<UserEntity, Integer> {
         source.put("surname", object.getSurname());
         source.put("login", object.getLogin());
         source.put("role_id", object.getRole().getId());
+        source.put("enabled", object.isEnabled());
         updatePhones(object);
         return namedParameterJdbcTemplate.update(query, source) != 0;
     }
@@ -60,8 +61,11 @@ public class UserDaoImpl extends AbstractDao<UserEntity, Integer> {
         queryBuilder.append(", ");
         queryBuilder.append(object.isEnabled());
         queryBuilder.append(")");
+        System.out.println(queryBuilder.toString());
         jdbcTemplate.execute(queryBuilder.toString());
-        updatePhones(object);
+        if (object.getPhones()!=null){
+            updatePhones(object);
+        }
     }
 
     private void updatePhones(UserEntity user) {
@@ -71,34 +75,34 @@ public class UserDaoImpl extends AbstractDao<UserEntity, Integer> {
         String deleteQuery = "DELETE FROM ${tablename} WHERE ID = :deletable".replace("${tablename}", TelephoneEntity.TABLE_NAME_FOR_USER_RELATION);
         List<Integer> phonesToDelete = new ArrayList<>();
         List<TelephoneEntity> phonesToInsert = new ArrayList<>();
-        if (null != user.getPhones()) {
-            phonesToInsert.addAll(user.getPhones());
-        }
-
+        phonesToInsert.addAll(user.getPhones());
         Set<TelephoneEntity> recentPhones = new HashSet<>();
         recentPhones.addAll(telephoneDao.getPhonesForUser(user.getId()));
-
-        for (TelephoneEntity recentPhone : recentPhones) {
-            boolean exists = false;
-            for (TelephoneEntity newPhone : phonesToInsert) {
-                if (recentPhone.getPhoneNumber().equals(newPhone.getPhoneNumber())) {
-                    phonesToInsert.remove(newPhone);
-                    exists = true;
+        if (!phonesToInsert.isEmpty() && !recentPhones.isEmpty()) {
+            for (TelephoneEntity recentPhone : recentPhones) {
+                boolean exists = false;
+                Iterator<TelephoneEntity> iterator = phonesToInsert.iterator();
+                while (iterator.hasNext()) {
+                    TelephoneEntity newPhone = iterator.next();
+                    if (recentPhone.getPhoneNumber().equals(newPhone.getPhoneNumber())) {
+                        iterator.remove();
+                        exists = true;
+                    }
+                }
+                if (!exists) {
+                    phonesToDelete.add(recentPhone.getId());
                 }
             }
-            if (!exists) {
-                phonesToDelete.add(recentPhone.getId());
+            for (Integer idToRemove : phonesToDelete) {
+                source.remove("deletable");
+                source.put("deletable", idToRemove);
+                namedParameterJdbcTemplate.update(deleteQuery, source);
             }
-        }
-        for (Integer idToRemove : phonesToDelete) {
-            source.remove("deletable");
-            source.put("deletable", idToRemove);
-            namedParameterJdbcTemplate.update(deleteQuery, source);
-        }
-        for (TelephoneEntity phone : phonesToInsert) {
-            source.remove("phone_id");
-            source.put("phone_id", phone.getId());
-            namedParameterJdbcTemplate.update(query, source);
+            for (TelephoneEntity phone : phonesToInsert) {
+                source.remove("phone_id");
+                source.put("phone_id", phone.getId());
+                namedParameterJdbcTemplate.update(query, source);
+            }
         }
     }
 

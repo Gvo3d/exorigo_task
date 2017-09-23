@@ -1,3 +1,14 @@
-<body>
-<table wicket:id="datatable"></table>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <title>Wicket!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="padding-top: 60px">
+<header wicket:id="navbar" class="bs-docs-nav"></header>
+<wicket:child/>
+<form style="padding-top: 5px" wicket:id="createP">
+    <input type="submit" value="Create new phone"/>
+</form>
+<table class="table" wicket:id="datatableP"></table>
 </body>
+</html>

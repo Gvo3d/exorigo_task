@@ -20,7 +20,7 @@ public class UserActionPanel extends Panel {
             @Override
             public void onClick() {
                 PageParameters pageParameters = new PageParameters();
-                pageParameters.add("userId",model.getObject().getId());
+                pageParameters.add("targetId",model.getObject().getId());
                 setResponsePage(redirect,pageParameters);
             }
         });

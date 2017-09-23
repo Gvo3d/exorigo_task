@@ -1,4 +1,4 @@
-package org.yakimovdenis.exorigo_task.support;
+package org.yakimovdenis.exorigo_task.components;
 
 import java.util.Comparator;
 
