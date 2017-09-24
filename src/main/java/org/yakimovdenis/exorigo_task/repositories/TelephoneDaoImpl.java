@@ -65,7 +65,7 @@ public class TelephoneDaoImpl extends AbstractDao<TelephoneEntity, Integer> {
                 if (!first) {
                     querybuilder.append(" OR");
                 }
-                querybuilder.append(" id = " + phoneId);
+                querybuilder.append(" id = ").append(phoneId);
                 first = false;
             }
             result.addAll(jdbcTemplate.query(querybuilder.toString(), rowMapper));

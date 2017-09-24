@@ -25,22 +25,20 @@ public class UserProvider extends SortableDataProvider {
 
     public Iterator<UserEntity> iterator(long first, long count) {
         List<UserEntity> newList = new ArrayList<UserEntity>(list);
-        newList.sort(new Comparator<UserEntity>() {
-            public int compare(UserEntity o1, UserEntity o2) {
-                int dir = getSort().isAscending() ? 1 : -1;
-                if ("name".equals(getSort().getProperty())) {
-                    return dir * (o1.getName().compareTo(o2.getName()));
-                } else if ("surname".equals(getSort().getProperty())) {
-                    return dir * (o1.getSurname().compareTo(o2.getSurname()));
-                } else if ("login".equals(getSort().getProperty())) {
-                    return dir * (o1.getLogin().compareTo(o2.getLogin()));
-                } else if ("role.roleName".equals(getSort().getProperty())) {
-                    return dir * (o1.getRole().getRoleName().compareTo(o2.getRole().getRoleName()));
-                } else if ("password".equals(getSort().getProperty())) {
-                    return 1;
-                } else {
-                    return dir * (new BooleanComparator(dir).compare(o1.isEnabled(), o2.isEnabled()));
-                }
+        newList.sort((o1, o2) -> {
+            int dir = getSort().isAscending() ? 1 : -1;
+            if ("name".equals(getSort().getProperty())) {
+                return dir * (o1.getName().compareTo(o2.getName()));
+            } else if ("surname".equals(getSort().getProperty())) {
+                return dir * (o1.getSurname().compareTo(o2.getSurname()));
+            } else if ("login".equals(getSort().getProperty())) {
+                return dir * (o1.getLogin().compareTo(o2.getLogin()));
+            } else if ("role.roleName".equals(getSort().getProperty())) {
+                return dir * (o1.getRole().getRoleName().compareTo(o2.getRole().getRoleName()));
+            } else if ("password".equals(getSort().getProperty())) {
+                return 1;
+            } else {
+                return dir * (new BooleanComparator(dir).compare(o1.isEnabled(), o2.isEnabled()));
             }
         });
         return newList.subList(Math.toIntExact(first), Math.toIntExact(first + count)).iterator();

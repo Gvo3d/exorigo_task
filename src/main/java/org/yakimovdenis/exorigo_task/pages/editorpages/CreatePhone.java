@@ -1,6 +1,5 @@
 package org.yakimovdenis.exorigo_task.pages.editorpages;
 
-import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.Navbar;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -15,13 +14,14 @@ import org.yakimovdenis.exorigo_task.components.ExactErrorLevelFilter;
 import org.yakimovdenis.exorigo_task.components.StringRegexValidator;
 import org.yakimovdenis.exorigo_task.model.TelephoneEntity;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
+import org.yakimovdenis.exorigo_task.pages.NavbarBasePage;
 import org.yakimovdenis.exorigo_task.service.TelephoneService;
 import org.yakimovdenis.exorigo_task.service.UserService;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CreatePhone extends BasePage {
+public class CreatePhone extends NavbarBasePage {
     private String selected;
     private TelephoneEntity selectedPhone;
     private Map<Integer, String> usersList;
@@ -37,7 +37,8 @@ public class CreatePhone extends BasePage {
         add(newNavbar("cuenavbar"));
         Set<UserEntity> usersFromDb = new TreeSet<UserEntity>(new BackwardUserComparator());
         usersFromDb.addAll(userService.getAll(null, null, null, false));
-        usersList = usersFromDb.stream().collect(Collectors.toMap(UserEntity::getId, x -> x.getSurname() + " " + x.getName()));
+        usersList = usersFromDb.stream().collect(Collectors.
+                toMap(UserEntity::getId, x -> x.getSurname() + " " + x.getName()));
         usersList.put(null, "NONE");
         List<String> userNamesList = new ArrayList<>();
         userNamesList.addAll(usersList.values());
@@ -56,14 +57,14 @@ public class CreatePhone extends BasePage {
             holderId = null;
         }
 
-        String sphoneNum = "";
+        String phoneNumText = "";
         String submitString = "Create new phone";
 
         if (null == searcheablePhone) {
             selected = usersList.get(null);
         } else {
             selectedPhone = phoneService.getOne(searcheablePhone);
-            sphoneNum = selectedPhone.getPhoneNumber();
+            phoneNumText = selectedPhone.getPhoneNumber();
             try {
                 selected = usersList.get(phoneService.getUserForPhone(searcheablePhone));
             } catch (Exception e){
@@ -78,7 +79,7 @@ public class CreatePhone extends BasePage {
 
         add(new FeedbackPanel("feedback"));
 
-        final TextField<String> phoneNum = new TextField<String>("phoneNum", Model.of(sphoneNum));
+        final TextField<String> phoneNum = new TextField<String>("phoneNum", Model.of(phoneNumText));
         final DropDownChoice<String> usersForPhones = new DropDownChoice<String>(
                 "users", new PropertyModel<String>(this, "selected"), userNamesList);
         final Button submitLabel = new Button("submitb", Model.of(submitString));
@@ -138,13 +139,6 @@ public class CreatePhone extends BasePage {
         phoneService.setSavePhoneForUser(key, newPhone.getId());
     }
 
-    protected Navbar newNavbar(String markupId) {
-        Navbar navbar = new Navbar(markupId);
-        navbar.setPosition(Navbar.Position.TOP);
-        navbar.setInverted(true);
-        navbar.setBrandName(Model.of("EXORIGO"));
-        return navbar;
-    }
 
     private class BackwardUserComparator implements Comparator<UserEntity> {
         @Override

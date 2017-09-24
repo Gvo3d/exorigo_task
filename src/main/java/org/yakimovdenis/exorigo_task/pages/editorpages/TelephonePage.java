@@ -32,7 +32,7 @@ public class TelephonePage extends BasePage {
     @SpringBean
     private UserService userService;
 
-    TelephoneProvider dataProvider;
+    private TelephoneProvider dataProvider;
 
     public TelephonePage(PageParameters parameters) {
         super(parameters);

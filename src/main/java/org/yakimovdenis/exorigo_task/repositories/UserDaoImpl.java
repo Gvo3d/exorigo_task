@@ -16,9 +16,9 @@ import java.util.*;
 
 @Repository
 public class UserDaoImpl extends AbstractDao<UserEntity, Integer> {
-    private static final String UPDATE_USER = "UPDATE ${tablename}  SET name = :name, surname = :surname, login = :login, role_id = :role_id, enabled = :enabled WHERE id = :id";
+    private static final String UPDATE_USER = "UPDATE ${tablename} SET name = :name, surname = :surname, login = :login, role_id = :role_id, enabled = :enabled WHERE id = :id";
     private static final String USER_PHONE_EXISTS = "SELECT id from ${tablename} WHERE user_id = :user_id AND phone_id = :phone_id";
-    private static final String UPDATE_PASSWORD = "UPDATE ${tablename} u SET u.password = :password WHERE u.id = :id";
+    private static final String UPDATE_PASSWORD = "UPDATE ${tablename} SET password = :password WHERE id = :id";
 
     @Autowired
     private TelephoneDaoImpl telephoneDao;
@@ -49,20 +49,11 @@ public class UserDaoImpl extends AbstractDao<UserEntity, Integer> {
     public void create(UserEntity object) {
         String query = CREATE.replace("${tablename}", UserEntity.TABLE_NAME);
         StringBuilder queryBuilder = new StringBuilder(query);
-        queryBuilder.append("(name, surname, login, password, role_id, enabled) VALUES ('");
-        queryBuilder.append(object.getName());
-        queryBuilder.append("', '");
-        queryBuilder.append(object.getSurname());
-        queryBuilder.append("', '");
-        queryBuilder.append(object.getLogin());
-        queryBuilder.append("', '");
-        queryBuilder.append(object.getPassword());
-        queryBuilder.append("', ");
-        queryBuilder.append(object.getRole().getId());
-        queryBuilder.append(", ");
-        queryBuilder.append(object.isEnabled());
-        queryBuilder.append(")");
-        System.out.println(queryBuilder.toString());
+        queryBuilder.append("(name, surname, login, password, role_id, enabled) VALUES ('")
+                .append(object.getName()).append("', '").append(object.getSurname())
+                .append("', '").append(object.getLogin()).append("', '")
+                .append(object.getPassword()).append("', ").append(object.getRole()
+                .getId()).append(", ").append(object.isEnabled()).append(")");
         jdbcTemplate.execute(queryBuilder.toString());
         if (object.getPhones()!=null){
             updatePhones(object);
@@ -128,5 +119,6 @@ public class UserDaoImpl extends AbstractDao<UserEntity, Integer> {
         Map<String, Object> source = new HashMap<>();
         source.put("id", id);
         source.put("password", bCryptPasswordEncoder.encode(newPassword));
+        namedParameterJdbcTemplate.update(query,source);
     }
 }

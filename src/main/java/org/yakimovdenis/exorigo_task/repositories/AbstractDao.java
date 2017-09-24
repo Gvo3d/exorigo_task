@@ -1,11 +1,7 @@
 package org.yakimovdenis.exorigo_task.repositories;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.yakimovdenis.exorigo_task.database_support.IntegerResultSetExtractor;
@@ -17,17 +13,17 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractDao<T, ID extends Serializable> {
-    static final String CREATE = "INSERT INTO ${tablename} ";
-    static final String DELETE_BY_ID_QUERY = "DELETE FROM ${tablename} WHERE id = :id";
-    static final String GET_ALL_QUERY = "SELECT * FROM ${tablename}";
-    static final String GET_ONE_QUERY = "SELECT * FROM ${tablename} where id = :id";
-    static final String EXISTS_QUERY = "SELECT COUNT(id) from ${tablename} U WHERE U.id = :id";
+    protected static final String CREATE = "INSERT INTO ${tablename} ";
+    private static final String DELETE_BY_ID_QUERY = "DELETE FROM ${tablename} WHERE id = :id";
+    private static final String GET_ALL_QUERY = "SELECT * FROM ${tablename}";
+    private static final String GET_ONE_QUERY = "SELECT * FROM ${tablename} where id = :id";
+    private static final String EXISTS_QUERY = "SELECT COUNT(id) from ${tablename} U WHERE U.id = :id";
 
-    protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    protected JdbcTemplate jdbcTemplate;
-    protected IntegerResultSetExtractor integerResultSetExtractor;
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    JdbcTemplate jdbcTemplate;
+    IntegerResultSetExtractor integerResultSetExtractor;
 
-    public AbstractDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate, JdbcTemplate jdbcTemplate, IntegerResultSetExtractor integerResultSetExtractor) {
+    protected AbstractDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate, JdbcTemplate jdbcTemplate, IntegerResultSetExtractor integerResultSetExtractor) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.jdbcTemplate = jdbcTemplate;
         this.integerResultSetExtractor = integerResultSetExtractor;

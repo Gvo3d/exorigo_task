@@ -1,8 +1,6 @@
 package org.yakimovdenis.exorigo_task.pages.editorpages;
 
-import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.Navbar;
 import org.apache.wicket.feedback.FeedbackMessage;
-import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -10,9 +8,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
 import org.yakimovdenis.exorigo_task.components.ExactErrorLevelFilter;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
+import org.yakimovdenis.exorigo_task.pages.NavbarBasePage;
 import org.yakimovdenis.exorigo_task.service.RoleService;
 import org.yakimovdenis.exorigo_task.service.UserService;
 import org.yakimovdenis.exorigo_task.components.StringRegexValidator;
@@ -20,7 +18,7 @@ import org.yakimovdenis.exorigo_task.components.StringRegexValidator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CreateUser extends BasePage {
+public class CreateUser extends NavbarBasePage {
     private String selected;
     private UserEntity selectedUser;
 
@@ -142,14 +140,6 @@ public class CreateUser extends BasePage {
         form.add(passLabel);
         form.add(listSites);
         form.add(submitLabel);
-    }
-
-    public Navbar newNavbar(String markupId) {
-        Navbar navbar = new Navbar(markupId);
-        navbar.setPosition(Navbar.Position.TOP);
-        navbar.setInverted(true);
-        navbar.setBrandName(Model.of("EXORIGO"));
-        return navbar;
     }
 }
 

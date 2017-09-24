@@ -1,16 +1,10 @@
 package org.yakimovdenis.exorigo_task.pages.editorpages;
 
-import org.apache.wicket.Page;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.yakimovdenis.exorigo_task.model.IdentifiableEntity;
-import org.yakimovdenis.exorigo_task.model.UserEntity;
-import org.yakimovdenis.exorigo_task.pages.editorpages.CreateUser;
 
 public class IdentifiableEntityActionPanel extends Panel {
     private static final long serialVersionUID = 1L;

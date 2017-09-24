@@ -13,9 +13,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.yakimovdenis.exorigo_task.components.ExactErrorLevelFilter;
 import org.yakimovdenis.exorigo_task.components.StringRegexValidator;
 import org.yakimovdenis.exorigo_task.model.RoleEntity;
+import org.yakimovdenis.exorigo_task.pages.NavbarBasePage;
 import org.yakimovdenis.exorigo_task.service.RoleService;
 
-public class CreateRole extends BasePage {
+public class CreateRole extends NavbarBasePage {
     private RoleEntity selectedRole;
 
     @SpringBean
@@ -83,14 +84,5 @@ public class CreateRole extends BasePage {
         form.add(rolename);
         form.add(submitLabel);
     }
-
-    protected Navbar newNavbar(String markupId) {
-        Navbar navbar = new Navbar(markupId);
-        navbar.setPosition(Navbar.Position.TOP);
-        navbar.setInverted(true);
-        navbar.setBrandName(Model.of("EXORIGO"));
-        return navbar;
-    }
-
 }
 

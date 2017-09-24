@@ -6,20 +6,21 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.yakimovdenis.exorigo_task.components.StringRegexValidator;
-import org.yakimovdenis.exorigo_task.model.AuthCredentials;
 import org.yakimovdenis.exorigo_task.model.UserEntity;
 import org.yakimovdenis.exorigo_task.pages.editorpages.UserPage;
 import org.yakimovdenis.exorigo_task.service.SecurityServiceImpl;
 
 @WicketHomePage
-public class HomePage extends WebPage {
+public class HomePage extends NavbarBasePage {
 
 	@SpringBean
 	private SecurityServiceImpl securityService;
 
-	public HomePage() {
+	public HomePage(final PageParameters pageParameters) {
+		super(pageParameters);
 		add(newNavbar("cuenavbar"));
 
 		final TextField<String> login = new TextField<String>("login", Model.of(""));
@@ -49,13 +50,5 @@ public class HomePage extends WebPage {
 		form.add(login);
 		form.add(password);
 		add(form);
-	}
-
-	public Navbar newNavbar(String markupId) {
-		Navbar navbar = new Navbar(markupId);
-		navbar.setPosition(Navbar.Position.TOP);
-		navbar.setInverted(true);
-		navbar.setBrandName(Model.of("EXORIGO"));
-		return navbar;
 	}
 }

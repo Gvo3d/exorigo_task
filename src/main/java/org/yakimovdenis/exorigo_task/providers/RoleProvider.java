@@ -25,11 +25,9 @@ public class RoleProvider extends SortableDataProvider {
 
     public Iterator<RoleEntity> iterator(long first, long count) {
         List<RoleEntity> newList = new ArrayList<RoleEntity>(list);
-        newList.sort(new Comparator<RoleEntity>() {
-            public int compare(RoleEntity o1, RoleEntity o2) {
-                int dir = getSort().isAscending() ? 1 : -1;
-                return dir * (o1.getRoleName().compareTo(o2.getRoleName()));
-            }
+        newList.sort((o1, o2) -> {
+            int dir = getSort().isAscending() ? 1 : -1;
+            return dir * (o1.getRoleName().compareTo(o2.getRoleName()));
         });
         return newList.subList(Math.toIntExact(first), Math.toIntExact(first + count)).iterator();
     }

@@ -23,7 +23,7 @@ public class UserPage extends BasePage {
     @SpringBean
     private UserService userService;
 
-    UserProvider dataProvider;
+    private UserProvider dataProvider;
 
     public UserPage(PageParameters parameters) {
         super(parameters);

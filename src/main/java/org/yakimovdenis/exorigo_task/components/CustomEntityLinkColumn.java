@@ -5,7 +5,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColu
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.yakimovdenis.exorigo_task.model.IdentifiableEntity;
-import org.yakimovdenis.exorigo_task.model.UserEntity;
 import org.yakimovdenis.exorigo_task.pages.editorpages.BasePage;
 import org.yakimovdenis.exorigo_task.pages.editorpages.IdentifiableEntityActionPanel;
 

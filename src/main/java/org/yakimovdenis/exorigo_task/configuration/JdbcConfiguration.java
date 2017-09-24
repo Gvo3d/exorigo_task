@@ -14,25 +14,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
-import org.yakimovdenis.exorigo_task.WicketApplication;
 import org.yakimovdenis.exorigo_task.database_support.IntegerResultSetExtractor;
 import org.yakimovdenis.exorigo_task.database_support.RoleRowMapper;
 import org.yakimovdenis.exorigo_task.database_support.TelephoneRowMapper;
 import org.yakimovdenis.exorigo_task.database_support.UserRowMapper;
 import org.yakimovdenis.exorigo_task.repositories.*;
-import org.yakimovdenis.exorigo_task.service.*;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 @Configuration

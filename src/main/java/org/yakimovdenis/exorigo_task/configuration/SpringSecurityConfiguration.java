@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.yakimovdenis.exorigo_task.service.AuthServiceImpl;
-import org.yakimovdenis.exorigo_task.service.SecurityServiceImpl;
 
 @Configuration
 @EnableWebSecurity

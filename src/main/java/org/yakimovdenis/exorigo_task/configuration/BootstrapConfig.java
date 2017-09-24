@@ -27,10 +27,7 @@ public class BootstrapConfig implements WicketApplicationInitConfiguration {
 	public void init(WebApplication webApplication) {
 		final ThemeProvider themeProvider = new BootswatchThemeProvider(prop.getTheme());
 		prop.setThemeProvider(themeProvider);
-
 		Bootstrap.install(webApplication, prop);
-		
-		
 		BootstrapLess.install(webApplication);
 	}
 

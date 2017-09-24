@@ -28,11 +28,9 @@ public class TelephoneProvider extends SortableDataProvider {
 
     public Iterator<TelephoneEntity> iterator(long first, long count) {
         List<TelephoneEntity> newList = new ArrayList<TelephoneEntity>(list);
-        newList.sort(new Comparator<TelephoneEntity>() {
-            public int compare(TelephoneEntity o1, TelephoneEntity o2) {
-                int dir = getSort().isAscending() ? 1 : -1;
-                return dir * (o1.getPhoneNumber().compareTo(o2.getPhoneNumber()));
-            }
+        newList.sort((o1, o2) -> {
+            int dir = getSort().isAscending() ? 1 : -1;
+            return dir * (o1.getPhoneNumber().compareTo(o2.getPhoneNumber()));
         });
         return newList.subList(Math.toIntExact(first), Math.toIntExact(first + count)).iterator();
     }
