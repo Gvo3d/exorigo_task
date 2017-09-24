@@ -2,16 +2,19 @@
 <head>
     <title>Wicket!</title>
 </head>
-<body>
-
-    <div class="container">
-        So simple!
-        <wicket:child/>
-        <form wicket:id="form">
-            <input type="submit" value="Login"/>
-        </form>
-
-    </div>
-
+<body style="padding-top: 60px">
+<header wicket:id="cuenavbar" class="bs-docs-nav"></header>
+<wicket:child/>
+<form wicket:id="loginForm">
+    <p>
+        <label>Login</label>:
+        <input style="width: 100%;padding: 12px 20px;margin: 8px 0;box-sizing: border-box;" wicket:id="login" type="text" size="50" />
+    </p>
+    <p>
+        <label>Password</label>:
+        <input style="width: 100%;padding: 12px 20px;margin: 8px 0;box-sizing: border-box;" wicket:id="password" type="text" size="50" />
+    </p>
+    <input style="width: 200px;background-color: #4CAF50;border: none;color: white;padding: 16px 32px;text-decoration: none;margin: 4px 2px;cursor: pointer;" type="submit"></input>
+</form>
 </body>
 </html>

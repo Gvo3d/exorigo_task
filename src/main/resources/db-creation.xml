@@ -107,7 +107,7 @@
             <column name="name" value="name1"/>
             <column name="surname" value="surname1"/>
             <column name="login" value="login1"/>
-            <column name="password" value="pass1"/>
+            <column name="password" value="$2a$11$b/r/V.hxtugPOAC.Z4Xjweo8EUn.tPemaDJ9MCKIh89jOfEEjPlWi"/>
             <column name="role_id" valueComputed="(SELECT id from roles where rolename='USER')"/>
             <column name="enabled" value="true"/>
         </insert>
@@ -115,7 +115,7 @@
             <column name="name" value="name2"/>
             <column name="surname" value="surname2"/>
             <column name="login" value="login2"/>
-            <column name="password" value="pass2"/>
+            <column name="password" value="$2a$11$.Qc3tDCIeM8Y6CTYfOmjPOHHMGtEz./jegQcYHselGM9rGqlnQ2Eq"/>
             <column name="role_id" valueComputed="(SELECT id from roles where rolename='USER')"/>
             <column name="enabled" value="true"/>
         </insert>
@@ -123,7 +123,7 @@
             <column name="name" value="name3"/>
             <column name="surname" value="surname3"/>
             <column name="login" value="login3"/>
-            <column name="password" value="pass3"/>
+            <column name="password" value="$2a$11$32x34NceAegLTs4rSmvPE.6Zq5l2XlzQQp0dfMRSJO2KakaRqvaHW"/>
             <column name="role_id" valueComputed="(SELECT id from roles where rolename='USER')"/>
             <column name="enabled" value="true"/>
         </insert>
@@ -131,7 +131,7 @@
             <column name="name" value="name4"/>
             <column name="surname" value="surname4"/>
             <column name="login" value="admin"/>
-            <column name="password" value="admin"/>
+            <column name="password" value="$2a$11$DBqivi6MBppButpmGsEeXuZCbcj2WKBVM8wGwhiaYJWC4zo7QdX/a"/>
             <column name="role_id" valueComputed="(SELECT id from roles where rolename='ADMIN')"/>
             <column name="enabled" value="true"/>
         </insert>
@@ -139,7 +139,7 @@
             <column name="name" value="name5"/>
             <column name="surname" value="surname5"/>
             <column name="login" value="login5"/>
-            <column name="password" value="pass5"/>
+            <column name="password" value="$2a$11$abP20n6DlhXlcdmj3Cofo.7xjV3vchnuz2k5dzvAUDJuCQLe3/hXm"/>
             <column name="role_id" valueComputed="(SELECT id from roles where rolename='ADMIN')"/>
             <column name="enabled" value="true"/>
         </insert>

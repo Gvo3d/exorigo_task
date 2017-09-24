@@ -18,10 +18,14 @@ public class AuthCredentialsResultSetExtractor implements ResultSetExtractor<Aut
 
     @Override
     public AuthCredentials extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-        resultSet.next();
-        AuthCredentials creds = new AuthCredentials(resultSet.getString("login"),resultSet.getString("login"));
-        creds.setId(resultSet.getInt("id"));
-        creds.setRoleEntity(roleService.getOne(resultSet.getInt("role_id")));
-        return creds;
+        try {
+            resultSet.next();
+            AuthCredentials creds = new AuthCredentials(resultSet.getString("login"), resultSet.getString("password"));
+            creds.setId(resultSet.getInt("id"));
+            creds.setRoleEntity(roleService.getOne(resultSet.getInt("role_id")));
+            return creds;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

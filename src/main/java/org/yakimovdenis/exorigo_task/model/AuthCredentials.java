@@ -23,7 +23,7 @@ public class AuthCredentials implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List list = new ArrayList();
-        list.add(roleEntity.getId());
+        list.add(roleEntity);
         return list;
     }
 
