@@ -51,7 +51,6 @@ public class HomePage extends WebPage {
 		add(form);
 	}
 
-
 	public Navbar newNavbar(String markupId) {
 		Navbar navbar = new Navbar(markupId);
 		navbar.setPosition(Navbar.Position.TOP);
